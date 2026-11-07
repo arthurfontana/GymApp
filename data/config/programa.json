@@ -1,0 +1,47 @@
+{
+  "aerobico": "Caminhada de 25–30 min, 2 a 3 vezes por semana, em ritmo acelerado mas confortável.",
+  "duracao": "50–65 min por sessão",
+  "frequencia": "2x por semana",
+  "indicadores": [
+    "Peso (média semanal)",
+    "Circunferência abdominal (a cada 15 dias)",
+    "Fotos (1x por mês)",
+    "Cargas e repetições"
+  ],
+  "inicio": "Nas primeiras duas semanas: duas séries por exercício, cargas moderadas e técnica bem executada. Depois o volume aumenta aos poucos.",
+  "intervalo": "48 h entre sessões",
+  "migrado": true,
+  "nome": "Full Body A/B",
+  "objetivo": "Recomposição corporal",
+  "orientacoes": [
+    {
+      "d": "8–12 na maioria dos exercícios",
+      "t": "Repetições"
+    },
+    {
+      "d": "2 no começo; 3 nos principais conforme a adaptação",
+      "t": "Séries"
+    },
+    {
+      "d": "2 min nos exercícios principais",
+      "t": "Descanso"
+    },
+    {
+      "d": "Terminar com 2–3 repetições possíveis antes da falha",
+      "t": "Intensidade"
+    },
+    {
+      "d": "Movimento controlado e amplitude confortável",
+      "t": "Execução"
+    },
+    {
+      "d": "Aumentar repetições e depois a carga",
+      "t": "Progressão"
+    }
+  ],
+  "perfil": {
+    "apelido": "Arthur",
+    "meta": 2,
+    "peso": 78.5
+  }
+}

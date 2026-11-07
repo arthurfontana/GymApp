@@ -1,0 +1,183 @@
+{
+  "aqFeito": true,
+  "atual": 4,
+  "conjuntoId": "academia",
+  "conjuntoNome": "Treino na academia",
+  "descansoFim": null,
+  "descansoTipo": "serie",
+  "descansoTotal": 90,
+  "fim": 1794065914436,
+  "id": "smw6bgilhw8us",
+  "inicio": 1794050688293,
+  "itens": [
+    {
+      "descanso": 120,
+      "exId": "agachamento-goblet",
+      "max": 12,
+      "min": 10,
+      "nome": "Agachamento goblet",
+      "nota": "Quadríceps e glúteos",
+      "passo": 1,
+      "porHalter": false,
+      "semCarga": false,
+      "series": 2,
+      "sets": [
+        {
+          "carga": 0,
+          "esforco": null,
+          "reps": 11,
+          "t": 1794065867379
+        },
+        {
+          "carga": 0,
+          "esforco": null,
+          "reps": 11,
+          "t": 1794065870883
+        }
+      ],
+      "tipo": "reps",
+      "uid": "b1"
+    },
+    {
+      "descanso": 120,
+      "exId": "puxada-alta",
+      "max": 12,
+      "min": 8,
+      "nome": "Puxada alta",
+      "nota": "Costas e bíceps",
+      "passo": 2.5,
+      "porHalter": false,
+      "semCarga": false,
+      "series": 2,
+      "sets": [
+        {
+          "carga": 0,
+          "esforco": null,
+          "reps": 10,
+          "t": 1794065872523
+        },
+        {
+          "carga": 0,
+          "esforco": null,
+          "reps": 10,
+          "t": 1794065880719
+        }
+      ],
+      "tipo": "reps",
+      "uid": "b2"
+    },
+    {
+      "descanso": 120,
+      "exId": "supino-inclinado",
+      "max": 12,
+      "min": 8,
+      "nome": "Supino inclinado com halteres",
+      "nota": "Peitoral superior e tríceps",
+      "passo": 1,
+      "porHalter": true,
+      "semCarga": false,
+      "series": 2,
+      "sets": [
+        {
+          "carga": 0,
+          "esforco": null,
+          "reps": 10,
+          "t": 1794065883575
+        },
+        {
+          "carga": 0,
+          "esforco": null,
+          "reps": 10,
+          "t": 1794065885385
+        }
+      ],
+      "tipo": "reps",
+      "uid": "b3"
+    },
+    {
+      "descanso": 60,
+      "exId": "mesa-flexora",
+      "max": 15,
+      "min": 10,
+      "nome": "Mesa flexora",
+      "nota": "Posterior de coxa",
+      "passo": 2.5,
+      "porHalter": false,
+      "semCarga": false,
+      "series": 2,
+      "sets": [
+        {
+          "carga": 0,
+          "esforco": null,
+          "reps": 13,
+          "t": 1794065895597
+        },
+        {
+          "carga": 0,
+          "esforco": null,
+          "reps": 13,
+          "t": 1794065897864
+        }
+      ],
+      "tipo": "reps",
+      "uid": "b4"
+    },
+    {
+      "descanso": 90,
+      "exId": "elevacao-pelvica",
+      "max": 12,
+      "min": 10,
+      "nome": "Elevação pélvica",
+      "nota": "Glúteos",
+      "passo": 2.5,
+      "porHalter": false,
+      "semCarga": false,
+      "series": 2,
+      "sets": [
+        {
+          "carga": 0,
+          "esforco": null,
+          "reps": 11,
+          "t": 1794065911195
+        }
+      ],
+      "tipo": "reps",
+      "uid": "b5"
+    },
+    {
+      "descanso": 60,
+      "exId": "rosca-biceps",
+      "max": 15,
+      "min": 10,
+      "nome": "Rosca bíceps",
+      "nota": "Bíceps",
+      "passo": 1,
+      "porHalter": true,
+      "semCarga": false,
+      "series": 2,
+      "sets": [],
+      "tipo": "reps",
+      "uid": "b6"
+    },
+    {
+      "descanso": 60,
+      "exId": "panturrilha-em-pe",
+      "max": 15,
+      "min": 12,
+      "nome": "Panturrilha em pé",
+      "nota": "Panturrilhas",
+      "passo": 2.5,
+      "porHalter": false,
+      "semCarga": false,
+      "series": 2,
+      "sets": [],
+      "tipo": "reps",
+      "uid": "b7"
+    }
+  ],
+  "letra": "B",
+  "notas": "",
+  "status": "concluida",
+  "treinoId": "B",
+  "treinoNome": "Treino B"
+}

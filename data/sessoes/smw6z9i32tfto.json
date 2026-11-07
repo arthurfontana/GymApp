@@ -1,0 +1,134 @@
+{
+  "aqFeito": true,
+  "aquecimento": [
+    {
+      "s": 30,
+      "t": "Marcha no lugar"
+    },
+    {
+      "s": 30,
+      "t": "Rotação dos ombros"
+    },
+    {
+      "s": 30,
+      "t": "Mobilidade do quadril"
+    },
+    {
+      "s": 30,
+      "t": "Agachamentos leves"
+    }
+  ],
+  "atual": 1,
+  "conjuntoId": "calistenia",
+  "conjuntoNome": "Calistenia em casa",
+  "descansoFim": 1794090764469,
+  "descansoRodada": 60,
+  "descansoTipo": "rodada",
+  "descansoTotal": 60,
+  "fim": null,
+  "formato": "circuito",
+  "id": "smw6z9i32tfto",
+  "inicio": 1794090671822,
+  "itens": [
+    {
+      "descanso": 30,
+      "dica": "Pés na largura dos ombros, quadril para trás e descida controlada.",
+      "exId": "agachamento-livre",
+      "max": 12,
+      "min": 12,
+      "nome": "Agachamento livre",
+      "nota": "Pernas e glúteos",
+      "passo": 2.5,
+      "porHalter": false,
+      "semCarga": true,
+      "series": 2,
+      "sets": [
+        {
+          "carga": null,
+          "esforco": null,
+          "reps": 12,
+          "t": 1794090685271
+        }
+      ],
+      "tipo": "reps",
+      "uid": "ca1"
+    },
+    {
+      "descanso": 30,
+      "dica": "Mãos na parede, corpo alinhado e cotovelos levemente próximos ao tronco. Se ficar fácil, passe para uma bancada firme.",
+      "exId": "flexao-parede",
+      "max": 10,
+      "min": 8,
+      "nome": "Flexão inclinada na parede",
+      "nota": "Peitoral, ombros e tríceps",
+      "passo": 2.5,
+      "porHalter": false,
+      "semCarga": true,
+      "series": 2,
+      "sets": [
+        {
+          "carga": null,
+          "esforco": null,
+          "reps": 10,
+          "t": 1794090694182
+        }
+      ],
+      "tipo": "reps",
+      "uid": "ca2"
+    },
+    {
+      "descanso": 30,
+      "dica": "Eleve o quadril e contraia os glúteos, sem compensar com a lombar.",
+      "exId": "ponte-gluteos",
+      "max": 12,
+      "min": 12,
+      "nome": "Ponte de glúteos",
+      "nota": "Glúteos e posterior de coxa",
+      "passo": 2.5,
+      "porHalter": false,
+      "semCarga": true,
+      "series": 2,
+      "sets": [
+        {
+          "carga": null,
+          "esforco": null,
+          "reps": 12,
+          "t": 1794090702089
+        }
+      ],
+      "tipo": "reps",
+      "uid": "ca3"
+    },
+    {
+      "descanso": 30,
+      "dica": "Estenda braço e perna opostos sem tirar a lombar do chão.",
+      "exId": "dead-bug",
+      "lado": "lado",
+      "max": 6,
+      "min": 6,
+      "nome": "Dead bug",
+      "nota": "Abdômen e estabilidade",
+      "passo": 2.5,
+      "porHalter": false,
+      "semCarga": true,
+      "series": 2,
+      "sets": [
+        {
+          "carga": null,
+          "esforco": null,
+          "reps": 6,
+          "t": 1794090704469
+        }
+      ],
+      "tipo": "reps",
+      "uid": "ca4"
+    }
+  ],
+  "letra": "A",
+  "notas": "",
+  "pesoCorp": 78.5,
+  "rodadas": 2,
+  "status": "andamento",
+  "treinoId": "cal-a",
+  "treinoNome": "Base de força"
+}

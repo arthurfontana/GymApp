@@ -1,0 +1,90 @@
+{
+  "aquecimento": [
+    {
+      "s": 30,
+      "t": "Marcha no lugar"
+    },
+    {
+      "s": 30,
+      "t": "Rotação dos ombros"
+    },
+    {
+      "s": 30,
+      "t": "Mobilidade do quadril"
+    },
+    {
+      "s": 30,
+      "t": "Agachamentos leves"
+    }
+  ],
+  "descansoRodada": 60,
+  "foco": "Corpo inteiro sem equipamento: pernas, empurrar, posterior de coxa e core.",
+  "formato": "circuito",
+  "itens": [
+    {
+      "descanso": 30,
+      "dica": "Dê um passo para trás e flexione os joelhos. Pode apoiar uma mão na parede.",
+      "exId": "afundo-tras",
+      "lado": "perna",
+      "max": 6,
+      "min": 6,
+      "nome": "Afundo para trás",
+      "nota": "Quadríceps e glúteos",
+      "passo": 2.5,
+      "porHalter": false,
+      "semCarga": true,
+      "series": 2,
+      "tipo": "reps",
+      "uid": "cb1"
+    },
+    {
+      "descanso": 30,
+      "dica": "Corpo alinhado dos joelhos à cabeça. Desça com controle. Se ainda for difícil, repita a flexão na parede.",
+      "exId": "flexao-joelhos",
+      "max": 8,
+      "min": 6,
+      "nome": "Flexão com joelhos apoiados",
+      "nota": "Peitoral, tríceps e ombros",
+      "passo": 2.5,
+      "porHalter": false,
+      "semCarga": true,
+      "series": 2,
+      "tipo": "reps",
+      "uid": "cb2"
+    },
+    {
+      "descanso": 30,
+      "dica": "Mãos no peito, joelhos levemente flexionados e quadril para trás, mantendo a coluna neutra.",
+      "exId": "bom-dia",
+      "max": 12,
+      "min": 12,
+      "nome": "Bom dia sem carga",
+      "nota": "Posterior de coxa e glúteos",
+      "passo": 2.5,
+      "porHalter": false,
+      "semCarga": true,
+      "series": 2,
+      "tipo": "reps",
+      "uid": "cb3"
+    },
+    {
+      "descanso": 30,
+      "dica": "Em quatro apoios, estenda braço e perna opostos sem girar o quadril.",
+      "exId": "bird-dog",
+      "lado": "lado",
+      "max": 8,
+      "min": 8,
+      "nome": "Bird dog",
+      "nota": "Core e estabilidade lombar",
+      "passo": 2.5,
+      "porHalter": false,
+      "semCarga": true,
+      "series": 2,
+      "tipo": "reps",
+      "uid": "cb4"
+    }
+  ],
+  "letra": "B",
+  "nome": "Força e estabilidade",
+  "rodadas": 2
+}

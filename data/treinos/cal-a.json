@@ -1,0 +1,89 @@
+{
+  "aquecimento": [
+    {
+      "s": 30,
+      "t": "Marcha no lugar"
+    },
+    {
+      "s": 30,
+      "t": "Rotação dos ombros"
+    },
+    {
+      "s": 30,
+      "t": "Mobilidade do quadril"
+    },
+    {
+      "s": 30,
+      "t": "Agachamentos leves"
+    }
+  ],
+  "descansoRodada": 60,
+  "foco": "Corpo inteiro sem equipamento: pernas, empurrar, glúteos e abdômen.",
+  "formato": "circuito",
+  "itens": [
+    {
+      "descanso": 30,
+      "dica": "Pés na largura dos ombros, quadril para trás e descida controlada.",
+      "exId": "agachamento-livre",
+      "max": 12,
+      "min": 12,
+      "nome": "Agachamento livre",
+      "nota": "Pernas e glúteos",
+      "passo": 2.5,
+      "porHalter": false,
+      "semCarga": true,
+      "series": 2,
+      "tipo": "reps",
+      "uid": "ca1"
+    },
+    {
+      "descanso": 30,
+      "dica": "Mãos na parede, corpo alinhado e cotovelos levemente próximos ao tronco. Se ficar fácil, passe para uma bancada firme.",
+      "exId": "flexao-parede",
+      "max": 10,
+      "min": 8,
+      "nome": "Flexão inclinada na parede",
+      "nota": "Peitoral, ombros e tríceps",
+      "passo": 2.5,
+      "porHalter": false,
+      "semCarga": true,
+      "series": 2,
+      "tipo": "reps",
+      "uid": "ca2"
+    },
+    {
+      "descanso": 30,
+      "dica": "Eleve o quadril e contraia os glúteos, sem compensar com a lombar.",
+      "exId": "ponte-gluteos",
+      "max": 12,
+      "min": 12,
+      "nome": "Ponte de glúteos",
+      "nota": "Glúteos e posterior de coxa",
+      "passo": 2.5,
+      "porHalter": false,
+      "semCarga": true,
+      "series": 2,
+      "tipo": "reps",
+      "uid": "ca3"
+    },
+    {
+      "descanso": 30,
+      "dica": "Estenda braço e perna opostos sem tirar a lombar do chão.",
+      "exId": "dead-bug",
+      "lado": "lado",
+      "max": 6,
+      "min": 6,
+      "nome": "Dead bug",
+      "nota": "Abdômen e estabilidade",
+      "passo": 2.5,
+      "porHalter": false,
+      "semCarga": true,
+      "series": 2,
+      "tipo": "reps",
+      "uid": "ca4"
+    }
+  ],
+  "letra": "A",
+  "nome": "Base de força",
+  "rodadas": 2
+}
