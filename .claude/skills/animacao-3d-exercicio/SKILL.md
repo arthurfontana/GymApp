@@ -36,11 +36,35 @@ Objetivo · equipamento · posição inicial · execução (excêntrica/concênt
 | `web/app.js` | objeto do exercício `const XYZ=(function(){…})();` antes de `const EXS=`; registrar `'id-do-exercicio':XYZ` em `EXS` (isso alimenta `__EX_IDS` e o roteador) |
 | `web/index.html` (menu, `<main id="menuView">`) | card `<a class="ex" href="#id">` no grupo muscular certo, com número sequencial, nome, `badge` e 2 chips; renumerar se inserir no meio |
 | `web/treino.js` → `LIB` | `{nome, grupo, foco, passo?, porHalter?, principal?, semCarga?, tipo?:'tempo', lado?, eq:[...], eqTxt}` |
-| `web/pontos.js` → `PX` | `{r, ref, met}` (ou `{s, met}` se por tempo): `r` pontos por repetição conforme a intensidade (massa muscular + exigência; veja a tabela), `ref` = carga de referência × peso corporal, `met` do Compendium (5,0 agachamento/terra · 3,5 musculação · 3,8 calistenia · 2,8 leve/isométrico) |
+| `web/pontos.js` → `PX` | `r`/`s`, `ref` e `met` decididos pela régua da **seção 3a** (obrigatório) |
 | `CLAUDE.md` §2 | item numerado novo com parâmetros, vistas, cores, tempo (T_END) e erros; atualizar contagem (N exercícios, N sem equipamento) e o "Menu" |
 | `web/tests/mini.mjs` | incluir o id para a prévia do cartão |
 
 Depois de editar: `cd web && python3 build.py` (**nunca** editar o `<script>` de `index.html` na mão).
+
+## 3a. Lógica de pontuação do exercício novo (decidir e gravar em `PX`, `web/pontos.js`)
+Todo exercício entra na biblioteca **já com pontos**. Decida os três números abaixo com esta régua, para os novos ficarem justos em relação aos 22 atuais. Se o exercício ficar sem entrada em `PX`, o app usa um valor genérico (1,5 pt/rep) e ele deixa de ser comparável.
+
+**`r` — pontos por repetição** (massa muscular envolvida + exigência do movimento):
+| Perfil do exercício | `r` | Intensidade | Exemplos atuais |
+|---|---|---|---|
+| Composto de pernas/quadril, grande massa, com carga | 2,6 – 3,0 | 5 | leg press 3,0 · goblet 2,8 · stiff 2,6 · hip thrust 2,6 |
+| Composto de tronco superior com carga | 2,0 – 2,2 | 4 | supino halteres 2,2 · supino máquina/remada/puxada 2,0 |
+| Multiarticular com peso do corpo, ou perna isolada de média massa | 1,6 – 1,8 | 3 | afundo 1,8 · agachamento livre/flexão com joelhos/mesa flexora 1,6 |
+| Monoarticular, pouca massa | 1,2 | 2 | panturrilha · elevação lateral · tríceps · rosca |
+| Estabilidade, mobilidade ou peso do corpo muito leve | 0,7 – 1,0 | 1–2 | ponte 1,0 · flexão na parede/bom dia 0,8 · bird dog/dead bug 0,7 |
+
+Ajuste fino: +0,2 se a amplitude for grande ou o equilíbrio exigir muito; −0,2 se o aparelho guiar todo o movimento. Intensidade (1–5) é calculada sozinha a partir de `r`. Exercícios **por lado/perna** têm `lado` no `LIB` (as repetições contam duas vezes), então **não** dobre `r`.
+
+**`s` — pontos por segundo**, só para isométricos medidos em tempo (`tipo:'tempo'`): use `s:.5` (prancha) e **no lugar de `r`**. Sustentação mais fácil: `.4`.
+
+**`ref` — carga de referência em fração do peso corporal** (só para exercícios com carga): a carga **total** (halteres somados) que um praticante intermediário usa em 8–12 repetições ÷ peso corporal. Com ela, carga igual à referência vale fator 1; o fator é √(carga ÷ (ref × peso)) limitado entre 0,5 e 2. Referências atuais: leg press 1,2 · hip thrust/panturrilha 1,0 · remada/puxada 0,7 · supino máquina 0,6 · stiff 0,5 · mesa flexora 0,45 · supino halteres 0,45 · goblet 0,3 · tríceps 0,3 · rosca 0,25 · elevação lateral 0,2. Exercício só com peso do corpo (`semCarga:true`): **sem `ref`**.
+
+**`met` — gasto energético** (Compendium of Physical Activities 2024, base das calorias = MET × peso × tempo ativo): 5,0 agachamento/terra e composto grande de pernas (02052) · 3,5 musculação em geral (02054) · 3,8 calistenia moderada (02022) · 2,8 calistenia leve, isométrico e mobilidade (02024).
+
+**Formato da entrada:** com carga `'id':{r:2.0,ref:.6,met:3.5}` · peso do corpo `'id':{r:1.6,met:3.8}` · tempo `'id':{s:.5,met:2.8}`.
+
+**Conferência dos pontos:** abra o exercício na biblioteca (selo de intensidade no card), a tabela da página "Regras" em Minha jornada e "Adicionar exercício". Compare com um parecido: uma série de 10 reps com a carga de referência deve valer perto de `10 × r`. No fim, informe ao Arthur os três valores escolhidos e por quê, em uma linha.
 
 ## 4. Verificação (obrigatória antes de dizer que está pronto)
 1. `cd web && npm run serve` em segundo plano; `node tests/ex.mjs '[{"name":"lat0","t":0,"v":"lateral"},{"name":"lat1","t":<meio>,"v":"lateral"},{"name":"fr","t":<meio>,"v":"frontal"},{"name":"an","t":<meio>,"v":"anatomia"},{"name":"err","t":<t>,"v":"lateral","err":"<id>"}]' <id> <prefixo>` e **olhar os prints** (`web/out/`): início, meio e fim de cada vista, e pelo menos um erro.

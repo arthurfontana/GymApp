@@ -3,7 +3,7 @@
 Contexto completo do projeto para retomar o trabalho em outra conversa. Idioma do usuário: português do Brasil (Arthur). Respostas curtas, sem jargão técnico desnecessário; ele usa o app do Claude no celular.
 
 ## 0. Regra permanente: use a skill de animação 3D
-**Sempre que o Arthur enviar o descritivo/briefing de uma animação (ou pedir exercício novo ou ajuste na execução 3D), use a skill `animacao-3d-exercicio`** (`.claude/skills/animacao-3d-exercicio/SKILL.md`). Ela define o padrão do boneco, os 9 frames, vistas, erros comuns, os 4 pontos de integração (`app.js`, menu do `index.html`, `LIB` em `treino.js`, `PX` em `pontos.js`), a verificação com prints e a publicação no mesmo Artifact. Não improvise outro caminho. Se o ambiente não carregar skills do projeto, leia o arquivo e siga-o passo a passo.
+**Sempre que o Arthur enviar o descritivo/briefing de uma animação (ou pedir exercício novo ou ajuste na execução 3D), use a skill `animacao-3d-exercicio`** (`.claude/skills/animacao-3d-exercicio/SKILL.md`). Ela define o padrão do boneco, os 9 frames, vistas, erros comuns, os 4 pontos de integração (`app.js`, menu do `index.html`, `LIB` em `treino.js`, `PX` em `pontos.js`), a **régua de pontuação** do exercício novo (`r`/`s`, `ref`, `met`), a verificação com prints e a publicação no mesmo Artifact. Não improvise outro caminho. Se o ambiente não carregar skills do projeto, leia o arquivo e siga-o passo a passo.
 
 ## 1. Objetivo
 
