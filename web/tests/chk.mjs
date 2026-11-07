@@ -1,0 +1,10 @@
+import {chromium} from 'playwright';
+const b=await chromium.launch({args:['--use-gl=swiftshader','--enable-unsafe-swiftshader']});
+const p=await b.newPage({viewport:{width:390,height:844}});
+const errs=[];p.on('pageerror',e=>errs.push(e.message));
+await p.goto('http://localhost:8765/test.html#biblioteca');await p.waitForTimeout(1500);
+await p.screenshot({path:'chk_menu.png',fullPage:true});
+await p.goto('http://localhost:8765/test.html#leg-press-45');await p.waitForTimeout(3500);
+await p.evaluate(()=>{const d=document.querySelector('.errs,#errs,.err');d&&d.scrollIntoView();});await p.waitForTimeout(300);
+await p.screenshot({path:'chk_ex.png'});
+console.log('errors',errs);await b.close();

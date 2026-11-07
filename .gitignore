@@ -1,0 +1,6 @@
+node_modules/
+web/out/
+web/test.html
+*.png
+!docs/*.png
+.DS_Store

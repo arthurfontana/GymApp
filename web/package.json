@@ -1,0 +1,14 @@
+{
+  "name": "meu-treino-3d",
+  "private": true,
+  "version": "21.0.0",
+  "scripts": {
+    "build": "python3 build.py",
+    "serve": "python3 -m http.server 8765",
+    "test:gam": "mkdir -p out && node tests/gam.mjs light",
+    "test:cal": "mkdir -p out && node tests/cal.mjs light",
+    "test:jor": "mkdir -p out && node tests/jor.mjs light"
+  },
+  "dependencies": { "three": "0.128.0" },
+  "devDependencies": { "playwright": "^1.48.0" }
+}

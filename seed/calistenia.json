@@ -1,0 +1,309 @@
+{
+ "conjuntos/calistenia": {
+  "nome": "Calistenia em casa",
+  "descricao": "Full Body A/B · 8 semanas · sem equipamento",
+  "frequencia": "2x por semana + 1 opcional",
+  "duracao": "10–15 min por sessão",
+  "intervalo": "",
+  "intervaloH": 0,
+  "ordem": 2,
+  "criado": 1794058664450,
+  "treinos": [
+   {
+    "id": "cal-a",
+    "dia": "Segunda"
+   },
+   {
+    "id": "cal-b",
+    "dia": "Quinta"
+   }
+  ],
+  "inicio": "Nas primeiras duas semanas, faça somente A e B. A terceira sessão (sábado: Full Body opcional ou caminhada) não é obrigatória.",
+  "aerobico": "Caminhada num ritmo em que você consiga conversar, mas perceba que está fazendo esforço. Semanas 1–2: 15 min, 3x por semana · 3–4: 20 min, 3x · 5–6: 25 min, 4x · 7–8: 30 min, 4x.",
+  "indicadores": [
+   "Peso: 3 medições por semana, usando a média",
+   "Cintura: a cada 15 dias, sempre no mesmo ponto",
+   "Fotos: frente e perfil, 1x por mês",
+   "Desempenho: flexões, agachamentos e repetições com boa técnica"
+  ],
+  "orientacoes": [
+   {
+    "t": "Objetivos",
+    "d": "Reduzir gordura corporal, inclusive abdominal e peitoral · Recuperar condicionamento e força · Desenvolver a musculatura do corpo inteiro · Criar consistência sem depender de academia"
+   },
+   {
+    "t": "Semana",
+    "d": "Seg: Full Body A · Ter: caminhada 15–20 min · Qua: descanso · Qui: Full Body B · Sex: caminhada 15–20 min · Sáb: Full Body opcional ou caminhada · Dom: descanso"
+   },
+   {
+    "t": "Circuito",
+    "d": "Faça um exercício depois do outro. Descanse de 20 a 40 s quando necessário. Ao terminar os quatro, descanse 60 s e repita. Não é competição de velocidade: se precisar de mais descanso para manter a técnica, descanse."
+   },
+   {
+    "t": "Aquecimento",
+    "d": "2 min antes de começar: 30 s de marcha no lugar, 30 s de rotação dos ombros, 30 s de mobilidade do quadril e 30 s de agachamentos leves."
+   },
+   {
+    "t": "Evolução",
+    "d": "Semanas 1–2: 1–2 rodadas, aprender os movimentos · 3–4: 2 rodadas, melhorar a execução · 5–6: 2 rodadas com mais repetições, aumentar a resistência · 7–8: 2 rodadas com variações mais difíceis, ganhar força. Quando conseguir todas as repetições com facilidade, aumente a dificuldade."
+   },
+   {
+    "t": "Flexões",
+    "d": "Nível 1: parede (começo, menor resistência) · Nível 2: apoio elevado, numa bancada firme · Nível 3: joelhos apoiados · Nível 4: flexão tradicional, a meta. Não existe obrigação de chegar ao nível 4 em oito semanas."
+   },
+   {
+    "t": "Costas",
+    "d": "O programa não tem remada: sem equipamento não há forma segura de reproduzir a puxada horizontal com resistência suficiente. Não improvise com maçanetas ou móveis instáveis. Dá para começar com retração escapular e elevações em W deitado; no futuro, um elástico de resistência ou uma barra fixa apropriada."
+   },
+   {
+    "t": "Alimentação",
+    "d": "Déficit calórico moderado, proteína em todas as refeições, menos bebidas açucaradas e calorias líquidas, mais vegetais, frutas e fibras, e evitar compensar o exercício comendo mais. Referência: 1,4–2,0 g de proteína por kg, cerca de 110–157 g por dia no seu peso; não precisa atingir o limite superior logo no início."
+   },
+   {
+    "t": "Ajustes",
+    "d": "Comece com duas sessões, não três: a ideia é terminar os primeiros 14 dias sentindo que conseguiria continuar. Se algum exercício provocar dor articular, interrompa e adapte. Se houver cansaço excessivo, reduza o volume."
+   },
+   {
+    "t": "Ponto de partida",
+    "d": "78,5 kg · 1,72 m · IMC 26,5 (indicador de triagem, não diagnóstico)"
+   }
+  ],
+  "programa": {
+   "semanas": 8,
+   "fases": [
+    {
+     "de": 1,
+     "ate": 2,
+     "t": "1–2 rodadas",
+     "d": "Aprender os movimentos"
+    },
+    {
+     "de": 3,
+     "ate": 4,
+     "t": "2 rodadas",
+     "d": "Melhorar a execução"
+    },
+    {
+     "de": 5,
+     "ate": 6,
+     "t": "2 rodadas, mais repetições",
+     "d": "Aumentar a resistência"
+    },
+    {
+     "de": 7,
+     "ate": 8,
+     "t": "2 rodadas, variações mais difíceis",
+     "d": "Ganhar força"
+    }
+   ],
+   "caminhada": [
+    {
+     "de": 1,
+     "ate": 2,
+     "min": 15,
+     "vezes": 3
+    },
+    {
+     "de": 3,
+     "ate": 4,
+     "min": 20,
+     "vezes": 3
+    },
+    {
+     "de": 5,
+     "ate": 6,
+     "min": 25,
+     "vezes": 4
+    },
+    {
+     "de": 7,
+     "ate": 8,
+     "min": 30,
+     "vezes": 4
+    }
+   ],
+   "extras": [
+    "Registrei meu peso e cintura"
+   ]
+  }
+ },
+ "treinos/cal-a": {
+  "nome": "Base de força",
+  "letra": "A",
+  "foco": "Corpo inteiro sem equipamento: pernas, empurrar, glúteos e abdômen.",
+  "formato": "circuito",
+  "rodadas": 2,
+  "descansoRodada": 60,
+  "aquecimento": [
+   {
+    "t": "Marcha no lugar",
+    "s": 30
+   },
+   {
+    "t": "Rotação dos ombros",
+    "s": 30
+   },
+   {
+    "t": "Mobilidade do quadril",
+    "s": 30
+   },
+   {
+    "t": "Agachamentos leves",
+    "s": 30
+   }
+  ],
+  "itens": [
+   {
+    "uid": "ca1",
+    "exId": "agachamento-livre",
+    "nome": "Agachamento livre",
+    "nota": "Pernas e glúteos",
+    "dica": "Pés na largura dos ombros, quadril para trás e descida controlada.",
+    "series": 2,
+    "tipo": "reps",
+    "min": 12,
+    "max": 12,
+    "descanso": 30,
+    "passo": 2.5,
+    "porHalter": false,
+    "semCarga": true
+   },
+   {
+    "uid": "ca2",
+    "exId": "flexao-parede",
+    "nome": "Flexão inclinada na parede",
+    "nota": "Peitoral, ombros e tríceps",
+    "dica": "Mãos na parede, corpo alinhado e cotovelos levemente próximos ao tronco. Se ficar fácil, passe para uma bancada firme.",
+    "series": 2,
+    "tipo": "reps",
+    "min": 8,
+    "max": 10,
+    "descanso": 30,
+    "passo": 2.5,
+    "porHalter": false,
+    "semCarga": true
+   },
+   {
+    "uid": "ca3",
+    "exId": "ponte-gluteos",
+    "nome": "Ponte de glúteos",
+    "nota": "Glúteos e posterior de coxa",
+    "dica": "Eleve o quadril e contraia os glúteos, sem compensar com a lombar.",
+    "series": 2,
+    "tipo": "reps",
+    "min": 12,
+    "max": 12,
+    "descanso": 30,
+    "passo": 2.5,
+    "porHalter": false,
+    "semCarga": true
+   },
+   {
+    "uid": "ca4",
+    "exId": "dead-bug",
+    "nome": "Dead bug",
+    "nota": "Abdômen e estabilidade",
+    "dica": "Estenda braço e perna opostos sem tirar a lombar do chão.",
+    "series": 2,
+    "tipo": "reps",
+    "min": 6,
+    "max": 6,
+    "descanso": 30,
+    "passo": 2.5,
+    "porHalter": false,
+    "semCarga": true,
+    "lado": "lado"
+   }
+  ]
+ },
+ "treinos/cal-b": {
+  "nome": "Força e estabilidade",
+  "letra": "B",
+  "foco": "Corpo inteiro sem equipamento: pernas, empurrar, posterior de coxa e core.",
+  "formato": "circuito",
+  "rodadas": 2,
+  "descansoRodada": 60,
+  "aquecimento": [
+   {
+    "t": "Marcha no lugar",
+    "s": 30
+   },
+   {
+    "t": "Rotação dos ombros",
+    "s": 30
+   },
+   {
+    "t": "Mobilidade do quadril",
+    "s": 30
+   },
+   {
+    "t": "Agachamentos leves",
+    "s": 30
+   }
+  ],
+  "itens": [
+   {
+    "uid": "cb1",
+    "exId": "afundo-tras",
+    "nome": "Afundo para trás",
+    "nota": "Quadríceps e glúteos",
+    "dica": "Dê um passo para trás e flexione os joelhos. Pode apoiar uma mão na parede.",
+    "series": 2,
+    "tipo": "reps",
+    "min": 6,
+    "max": 6,
+    "descanso": 30,
+    "passo": 2.5,
+    "porHalter": false,
+    "semCarga": true,
+    "lado": "perna"
+   },
+   {
+    "uid": "cb2",
+    "exId": "flexao-joelhos",
+    "nome": "Flexão com joelhos apoiados",
+    "nota": "Peitoral, tríceps e ombros",
+    "dica": "Corpo alinhado dos joelhos à cabeça. Desça com controle. Se ainda for difícil, repita a flexão na parede.",
+    "series": 2,
+    "tipo": "reps",
+    "min": 6,
+    "max": 8,
+    "descanso": 30,
+    "passo": 2.5,
+    "porHalter": false,
+    "semCarga": true
+   },
+   {
+    "uid": "cb3",
+    "exId": "bom-dia",
+    "nome": "Bom dia sem carga",
+    "nota": "Posterior de coxa e glúteos",
+    "dica": "Mãos no peito, joelhos levemente flexionados e quadril para trás, mantendo a coluna neutra.",
+    "series": 2,
+    "tipo": "reps",
+    "min": 12,
+    "max": 12,
+    "descanso": 30,
+    "passo": 2.5,
+    "porHalter": false,
+    "semCarga": true
+   },
+   {
+    "uid": "cb4",
+    "exId": "bird-dog",
+    "nome": "Bird dog",
+    "nota": "Core e estabilidade lombar",
+    "dica": "Em quatro apoios, estenda braço e perna opostos sem girar o quadril.",
+    "series": 2,
+    "tipo": "reps",
+    "min": 8,
+    "max": 8,
+    "descanso": 30,
+    "passo": 2.5,
+    "porHalter": false,
+    "semCarga": true,
+    "lado": "lado"
+   }
+  ]
+ }
+}

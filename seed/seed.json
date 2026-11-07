@@ -1,0 +1,257 @@
+{
+ "config/programa": {
+  "nome": "Full Body A/B",
+  "objetivo": "Recomposição corporal",
+  "frequencia": "2x por semana",
+  "duracao": "50–65 min por sessão",
+  "intervalo": "48 h entre sessões",
+  "orientacoes": [
+   {
+    "t": "Repetições",
+    "d": "8–12 na maioria dos exercícios"
+   },
+   {
+    "t": "Séries",
+    "d": "2 no começo; 3 nos principais conforme a adaptação"
+   },
+   {
+    "t": "Descanso",
+    "d": "2 min nos exercícios principais"
+   },
+   {
+    "t": "Intensidade",
+    "d": "Terminar com 2–3 repetições possíveis antes da falha"
+   },
+   {
+    "t": "Execução",
+    "d": "Movimento controlado e amplitude confortável"
+   },
+   {
+    "t": "Progressão",
+    "d": "Aumentar repetições e depois a carga"
+   }
+  ],
+  "inicio": "Nas primeiras duas semanas: duas séries por exercício, cargas moderadas e técnica bem executada. Depois o volume aumenta aos poucos.",
+  "aerobico": "Caminhada de 25–30 min, 2 a 3 vezes por semana, em ritmo acelerado mas confortável.",
+  "indicadores": [
+   "Peso (média semanal)",
+   "Circunferência abdominal (a cada 15 dias)",
+   "Fotos (1x por mês)",
+   "Cargas e repetições"
+  ]
+ },
+ "treinos/A": {
+  "nome": "Treino A",
+  "letra": "A",
+  "dia": "Terça",
+  "ordem": 1,
+  "foco": "Corpo inteiro, com ênfase em agachamento, empurrar e puxar.",
+  "itens": [
+   {
+    "uid": "a1",
+    "exId": "leg-press-45",
+    "nome": "Leg press 45°",
+    "nota": "Quadríceps e glúteos",
+    "series": 3,
+    "tipo": "reps",
+    "min": 8,
+    "max": 12,
+    "descanso": 120,
+    "passo": 5,
+    "porHalter": false,
+    "semCarga": false
+   },
+   {
+    "uid": "a2",
+    "exId": "supino-maquina",
+    "nome": "Supino na máquina",
+    "nota": "Peitoral, tríceps e ombros",
+    "series": 2,
+    "tipo": "reps",
+    "min": 8,
+    "max": 12,
+    "descanso": 120,
+    "passo": 2.5,
+    "porHalter": false,
+    "semCarga": false
+   },
+   {
+    "uid": "a3",
+    "exId": "remada-sentada",
+    "nome": "Remada sentada",
+    "nota": "Costas e bíceps",
+    "series": 2,
+    "tipo": "reps",
+    "min": 8,
+    "max": 12,
+    "descanso": 120,
+    "passo": 2.5,
+    "porHalter": false,
+    "semCarga": false
+   },
+   {
+    "uid": "a4",
+    "exId": "stiff-halteres",
+    "nome": "Stiff com halteres",
+    "nota": "Posterior de coxa e glúteos",
+    "series": 2,
+    "tipo": "reps",
+    "min": 10,
+    "max": 12,
+    "descanso": 120,
+    "passo": 1,
+    "porHalter": true,
+    "semCarga": false
+   },
+   {
+    "uid": "a5",
+    "exId": "elevacao-lateral",
+    "nome": "Elevação lateral",
+    "nota": "Ombros",
+    "series": 2,
+    "tipo": "reps",
+    "min": 12,
+    "max": 15,
+    "descanso": 60,
+    "passo": 1,
+    "porHalter": true,
+    "semCarga": false
+   },
+   {
+    "uid": "a6",
+    "exId": "triceps-polia",
+    "nome": "Tríceps na polia",
+    "nota": "Tríceps",
+    "series": 2,
+    "tipo": "reps",
+    "min": 10,
+    "max": 15,
+    "descanso": 60,
+    "passo": 2.5,
+    "porHalter": false,
+    "semCarga": false
+   },
+   {
+    "uid": "a7",
+    "exId": "prancha",
+    "nome": "Prancha abdominal",
+    "nota": "Estabilidade do core",
+    "series": 2,
+    "tipo": "tempo",
+    "min": 30,
+    "max": 40,
+    "descanso": 60,
+    "passo": 0,
+    "porHalter": false,
+    "semCarga": true
+   }
+  ]
+ },
+ "treinos/B": {
+  "nome": "Treino B",
+  "letra": "B",
+  "dia": "Quinta",
+  "ordem": 2,
+  "foco": "Corpo inteiro, com ênfase em movimentos complementares e cadeia posterior.",
+  "itens": [
+   {
+    "uid": "b1",
+    "exId": "agachamento-goblet",
+    "nome": "Agachamento goblet",
+    "nota": "Quadríceps e glúteos",
+    "series": 2,
+    "tipo": "reps",
+    "min": 10,
+    "max": 12,
+    "descanso": 120,
+    "passo": 1,
+    "porHalter": false,
+    "semCarga": false
+   },
+   {
+    "uid": "b2",
+    "exId": "puxada-alta",
+    "nome": "Puxada alta",
+    "nota": "Costas e bíceps",
+    "series": 2,
+    "tipo": "reps",
+    "min": 8,
+    "max": 12,
+    "descanso": 120,
+    "passo": 2.5,
+    "porHalter": false,
+    "semCarga": false
+   },
+   {
+    "uid": "b3",
+    "exId": "supino-inclinado",
+    "nome": "Supino inclinado com halteres",
+    "nota": "Peitoral superior e tríceps",
+    "series": 2,
+    "tipo": "reps",
+    "min": 8,
+    "max": 12,
+    "descanso": 120,
+    "passo": 1,
+    "porHalter": true,
+    "semCarga": false
+   },
+   {
+    "uid": "b4",
+    "exId": "mesa-flexora",
+    "nome": "Mesa flexora",
+    "nota": "Posterior de coxa",
+    "series": 2,
+    "tipo": "reps",
+    "min": 10,
+    "max": 15,
+    "descanso": 60,
+    "passo": 2.5,
+    "porHalter": false,
+    "semCarga": false
+   },
+   {
+    "uid": "b5",
+    "exId": "elevacao-pelvica",
+    "nome": "Elevação pélvica",
+    "nota": "Glúteos",
+    "series": 2,
+    "tipo": "reps",
+    "min": 10,
+    "max": 12,
+    "descanso": 90,
+    "passo": 2.5,
+    "porHalter": false,
+    "semCarga": false
+   },
+   {
+    "uid": "b6",
+    "exId": "rosca-biceps",
+    "nome": "Rosca bíceps",
+    "nota": "Bíceps",
+    "series": 2,
+    "tipo": "reps",
+    "min": 10,
+    "max": 15,
+    "descanso": 60,
+    "passo": 1,
+    "porHalter": true,
+    "semCarga": false
+   },
+   {
+    "uid": "b7",
+    "exId": "panturrilha-em-pe",
+    "nome": "Panturrilha em pé",
+    "nota": "Panturrilhas",
+    "series": 2,
+    "tipo": "reps",
+    "min": 12,
+    "max": 15,
+    "descanso": 60,
+    "passo": 2.5,
+    "porHalter": false,
+    "semCarga": false
+   }
+  ]
+ }
+}
