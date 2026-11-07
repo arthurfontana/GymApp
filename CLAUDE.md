@@ -2,6 +2,9 @@
 
 Contexto completo do projeto para retomar o trabalho em outra conversa. Idioma do usuário: português do Brasil (Arthur). Respostas curtas, sem jargão técnico desnecessário; ele usa o app do Claude no celular.
 
+## 0. Regra permanente: use a skill de animação 3D
+**Sempre que o Arthur enviar o descritivo/briefing de uma animação (ou pedir exercício novo ou ajuste na execução 3D), use a skill `animacao-3d-exercicio`** (`.claude/skills/animacao-3d-exercicio/SKILL.md`). Ela define o padrão do boneco, os 9 frames, vistas, erros comuns, os 4 pontos de integração (`app.js`, menu do `index.html`, `LIB` em `treino.js`, `PX` em `pontos.js`), a verificação com prints e a publicação no mesmo Artifact. Não improvise outro caminho. Se o ambiente não carregar skills do projeto, leia o arquivo e siga-o passo a passo.
+
 ## 1. Objetivo
 
 Página web pessoal com o treino de academia do Arthur. Cada exercício tem um boneco 3D que demonstra a execução correta, para ele conferir a forma na academia pelo celular:
@@ -149,7 +152,7 @@ third_party/          atlas anatômico (CC BY-SA 4.0): manter ATTRIBUTION e LICE
 - **Publicar:** a ferramenta Artifact com `file_path=web/index.html`, `url=https://claude.ai/artifact/7rca7r3eRxTwX4kiZ4B7zK` e `files={"body-model.wasm":"web/body-model.wasm"}`. Antes, `action:"read"` na URL (exigido para atualizar um artifact de outra conversa). A capability `db` (`{rules:[{path:"",read:"admin",write:"owner"}]}`) é mantida se `capabilities` for omitido.
 - **Dados do Arthur ficam no db do Artifact, não no git** (coleções `treinos`, `conjuntos`, `sessoes`, `config`). Leia/escreva com `ArtifactData` passando a URL do artifact. `seed/` só reconstrói o ponto de partida. Há uma **cópia dos dados em `data/`** (snapshot manual; ver `data/README.md`): ao fim de uma sessão em que ele treinou, atualizar e commitar.
 - **Testes (`web/tests/`, `node tests/<nome>.mjs light|dark` de dentro de `web/`, com o servidor ligado):** `gam` (6 semanas sintéticas → placar → jornada → regras → perfil → resumo → sessão com recorde → biblioteca), `cal` (conjunto Calistenia: ficha da semana, circuito, aquecimento guiado, contagem por lado), `jor` (jornada completa no celular: conjuntos, migração, sessão, resumo, novo conjunto), `mob`/`menu`/`chk` (celular, overflow, regressão visual), `mini` (prévias dos exercícios), `lp`/`sup`/`row`/… (prints de cada exercício 3D; genérico: `ex.mjs`). Todos imprimem erros JS e largura da página (deve ser 390).
-- **Repositório privado:** `seed/` contém o peso e o programa pessoais do Arthur.
+- **Repositório público:** o Arthur sabe e aceitou que `seed/`, `data/` e o peso dele ficam visíveis.
 - Se o ambiente de ferramentas mudar, o HTML publicado também contém todo o código (`Artifact read`).
 
 ### Hooks de teste (só com `window.__TEST__`)
