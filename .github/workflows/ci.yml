@@ -1,5 +1,5 @@
-# CI do GymApp. A S01 criou o job `guardrails`; a S03 amplia este workflow
-# (install, testes, build e e2e).
+# CI do GymApp. A S01 criou o job `guardrails` (a S02 o trouxe para a raiz, junto com o
+# package.json); a S03 amplia este workflow (install, testes, build e e2e).
 name: CI
 
 on:
@@ -18,4 +18,3 @@ jobs:
       # Teto do CLAUDE.md (padrão 450 linhas, ou CLAUDE_MD_MAX_LINES)
       - name: Teto do CLAUDE.md
         run: npm run check:claude-md
-        working-directory: web

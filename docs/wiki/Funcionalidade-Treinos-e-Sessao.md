@@ -121,7 +121,7 @@ Edição colaborativa em tempo real, histórico de versões de um treino, import
 
 ## 8. Detalhe de tela e regra (estado atual do protótipo)
 
-Esta seção descreve as telas e regras do app como existem hoje (referência normativa para a migração). Notação: `LIB`, `PX` e funções como `vConjunto` são de `web/treino.js` e `web/pontos.js` (mapa de regiões em `docs/claude/Mapa-de-Regioes.md`).
+Esta seção descreve as telas e regras do app como existem hoje (referência normativa para a migração). Notação: `LIB`, `PX` e funções como `vConjunto` são de `src/jornada/treino.js` e `src/jornada/pontos.js` (mapa de regiões em `docs/claude/Mapa-de-Regioes.md`).
 
 ### 8.1 Camadas, rotas e tema
 

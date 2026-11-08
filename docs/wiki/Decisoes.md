@@ -131,7 +131,7 @@ As páginas de funcionalidade dizem **como o sistema é**. Esta página diz **po
 
 ## ADR-012: Guardrails de contexto no repositório
 
-**Decisão:** `CLAUDE.md` vira um índice enxuto (teto de 450 linhas, guard `scripts/check-claude-md.mjs` no CI); a documentação normativa fica em `docs/wiki/` (sincronizada com a Wiki); o detalhe de implementação, em `docs/claude/` (`Exercicios-3D`, `Motor-3D`, `Build-e-Publicacao`, `Mapa-de-Regioes`); e há âncoras de região `// #region: <slug>` (sem par de fechamento, só `grep`) nos arquivos grandes (hoje `web/app.js`, `web/treino.js`, `web/pontos.js`; `app3d.js` e `treino.js` depois da S02). Segue as skills `especificacao-e-sessoes` e `guardrails-de-contexto`.
+**Decisão:** `CLAUDE.md` vira um índice enxuto (teto de 450 linhas, guard `scripts/check-claude-md.mjs` no CI); a documentação normativa fica em `docs/wiki/` (sincronizada com a Wiki); o detalhe de implementação, em `docs/claude/` (`Exercicios-3D`, `Motor-3D`, `Build-e-Publicacao`, `Mapa-de-Regioes`); e há âncoras de região `// #region: <slug>` (sem par de fechamento, só `grep`) nos arquivos grandes (na S01 em `web/app.js`, `web/treino.js`, `web/pontos.js`; desde a S02 em `src/3d/app3d.js`, `src/jornada/treino.js`, `src/jornada/pontos.js`). Segue as skills `especificacao-e-sessoes` e `guardrails-de-contexto`.
 
 **Contexto:** o `CLAUDE.md` tinha 52 KB (cerca de 13 mil tokens) e crescia a cada exercício, como um changelog.
 
@@ -155,6 +155,18 @@ As páginas de funcionalidade dizem **como o sistema é**. Esta página diz **po
 
 ---
 
+## ADR-015: Build do Artifact pelo Vite e e2e com assert contra o build
+
+**Decisão (S02):** o mesmo código de `src/` gera as duas saídas. `npm run build` → `dist/` (Vite, módulos com hash, modelo em `modelos/body-model-v1.glb`). `npm run build:artifact` → `dist-artifact/` (`vite build --mode artifact`: um bundle IIFE com o three empacotado, posto inline como `<script>` clássico no fim do `<body>` por `scripts/build-artifact.mjs`; o modelo copiado como `body-model.wasm`). O `app3d.js` escolhe a URL do modelo por `import.meta.env.MODE`. `dist/` e `dist-artifact/` **não vão para o git** (antes o `web/index.html` gerado era commitado): o que se publica é sempre reconstruível do commit. Os e2e (`@playwright/test`) rodam contra `npm run preview` (o build de produção) e reprovam em qualquer `pageerror`/`console.error` ou largura > 390.
+
+**Detalhes que ficaram fixos aqui:** Vite 8 e Vitest 5 (dentro de Arquitetura §7); `@playwright/test` em versão exata igual à do Chromium do ambiente (1.63.0), para não baixar navegador; fontes do Google respondidas vazias nos testes (`page.route`), em vez de bloqueadas, para não gerar erro de console; modo de teste por `?test=1` (script inline antes do módulo), sem página `test.html` separada.
+
+**Contexto:** o `build.py` concatenava três arquivos num `<script>` e os testes só imprimiam erros. A S03 traz Vercel, PWA e o 3D sob demanda em cima desta base.
+
+**Trade-off aceito:** publicar no Artifact exige rodar o build antes (a skill 3D já manda); o HTML do Artifact passa de 0,56 MB para 1,07 MB porque o three (≈ 0,6 MB) vai dentro em vez de vir do jsDelivr.
+
+---
+
 ## Decisões do protótipo (ADR-000a a ADR-000g)
 
 Registradas na S01 a partir do histórico do `CLAUDE.md`. São anteriores ao plano de evolução; formato curto.
@@ -175,7 +187,7 @@ O mesmo boneco serve a todos ("usando o mesmo modelo de boneco"). O menu de exer
 A primeira versão tinha uma sequência de sentar com os halteres nas coxas e deitar antes dos 7 frames de movimento. Foi refeita para 9 frames só do movimento, com pegada pronada e as vistas Lateral/Frontal/45°/Anatomia (parâmetros atuais em [Exercicios-3D](../claude/Exercicios-3D.md)).
 
 ### ADR-000f: Artifact único, tudo inline, GLB publicado como `.wasm`
-O host do Artifact só serve tipos web padrão e scripts de CDNs permitidos: o HTML tem CSS e JS inline, o Three.js r128 vem do jsDelivr em versão fixa, e o binário GLB é publicado com o nome `body-model.wasm`. Substituída pelo plano de evolução (ADR-002/011) quando o app sair do Artifact.
+O host do Artifact só serve tipos web padrão e scripts de CDNs permitidos: o HTML tem CSS e JS inline, o Three.js r128 vem do jsDelivr em versão fixa, e o binário GLB é publicado com o nome `body-model.wasm`. Substituída pelo plano de evolução (ADR-002/011) quando o app sair do Artifact. Desde a S02 (ADR-015) o three vai empacotado no arquivo único, sem CDN.
 
 ### ADR-000g: Tema claro como padrão
 O tema padrão é **claro**, mesmo com o celular em modo escuro; a escolha fica no aparelho (`localStorage['mt3d.theme']`) e é aplicada antes do conteúdo, sem piscar.

@@ -1,15 +1,15 @@
 # Mapa de regiões
 
-Os arquivos grandes de `web/` têm âncoras `// #region: <slug>` no início de cada bloco lógico (sem par de fechamento; só comentário, nenhuma mudança de código). **A fonte da verdade é o grep**; este mapa só orienta por arquivo + slug (não lista números de linha, que se deslocam).
+Os arquivos grandes de `src/` têm âncoras `// #region: <slug>` no início de cada bloco lógico (sem par de fechamento; só comentário, nenhuma mudança de código). **A fonte da verdade é o grep**; este mapa só orienta por arquivo + slug (não lista números de linha, que se deslocam).
 
 ```bash
-grep -n "#region:" web/*.js              # todas as âncoras, com arquivo e linha atual
-grep -n "#region: ex-" web/app.js        # só os exercícios
+grep -n "#region:" src/*/*.js            # todas as âncoras, com arquivo e linha atual
+grep -n "#region: ex-" src/3d/app3d.js   # só os exercícios
 ```
 
 Padrão do slug: kebab-case; `ex-<const>` para cada exercício (a const em minúsculas, igual às de [Exercicios-3D](Exercicios-3D.md)). Ao criar um bloco novo, ponha a âncora no início e uma linha aqui.
 
-## `web/app.js` — biblioteca 3D (motor + exercícios)
+## `src/3d/app3d.js` — biblioteca 3D (motor + exercícios)
 
 | Slug | O que tem (principais nomes) |
 |---|---|
@@ -30,10 +30,10 @@ Padrão do slug: kebab-case; `ex-<const>` para cada exercício (a const em minú
 | `loop` | `frame`, `boneMatrix`, `declutter`, `BM`; leitura de readouts e HUD |
 | `mini` | `mini`, `miniOff`, `window.__mini` (prévia na sessão), `loop()` |
 | `enter-exercise` | `window.__enterExercise` |
-| `carga-modelo-fetch` | `loadFail` e o `fetch('body-model.wasm')` + `GLTFLoader.parse` |
-| `ganchos-teste` | `window.__go`, `__parts`, `__EXC` (só com `__TEST__`) |
+| `carga-modelo-fetch` | `loadFail` e o `fetch` do modelo (`modelos/body-model-v1.glb`; `body-model.wasm` no Artifact) + `GLTFLoader.parse` |
+| `ganchos-teste` | `window.__go`, `__parts`, `__EXC` (só com `__TEST__`, ligado por `?test=1`) |
 
-## `web/treino.js` — jornada (IIFE; `pontos.js` entra no marcador `/*@@PONTOS@@*/`, entre `progressao` e `render`)
+## `src/jornada/treino.js` — jornada (IIFE; `pontos.js` entra no marcador `/*@@PONTOS@@*/`, entre `progressao` e `render`, pelo plugin do `vite.config.js`)
 
 | Slug | O que tem |
 |---|---|
@@ -66,7 +66,7 @@ Padrão do slug: kebab-case; `ex-<const>` para cada exercício (a const em minú
 | `eventos` | delegação de cliques, `finalizar`, `sheetSet` |
 | `roteador` | `VIEWS`, `route` (hash) |
 
-## `web/pontos.js` — pontuação (colado no `treino.js` pelo build)
+## `src/jornada/pontos.js` — pontuação (colado no `treino.js` pelo plugin `gymapp-pontos` do Vite)
 
 | Slug | O que tem |
 |---|---|
@@ -85,3 +85,7 @@ Padrão do slug: kebab-case; `ex-<const>` para cada exercício (a const em minú
 | `telas-resumo` | `vPontosResumo` |
 | `animacoes` | `animaResumo`, `confete`, `voaPontos` |
 | `perfil` | `sheetPerfil` |
+
+## Arquivos pequenos (sem âncoras)
+
+`src/main.js` (ordem dos imports), `src/three-setup.js` (`window.THREE`), `src/styles/app.css` e `src/styles/treino.css`, `index.html` (casca e menu da biblioteca: `#menuView`).

@@ -1,6 +1,11 @@
 node_modules/
-web/out/
-web/test.html
+# saída de build (nunca ler, varrer nem editar)
+dist/
+dist-artifact/
+# relatórios e prints dos testes
+test-results/
+playwright-report/
+tests/visual/out/
 *.png
 !docs/*.png
 .DS_Store

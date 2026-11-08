@@ -1,19 +1,22 @@
 # Arquitetura
 
-> **Estado**: 🚧 Protótipo v21 em produção no Artifact · arquitetura alvo 🔮 planejada (S02–S16)
-> **DECs**: ADR-001, ADR-002, ADR-003, ADR-004, ADR-006, ADR-008, ADR-009, ADR-012, ADR-013
+> **Estado**: 🚧 Protótipo v21 em produção no Artifact (desde a S02, montado pelo Vite: v22) · arquitetura alvo 🔮 planejada (S03–S16)
+> **DECs**: ADR-001, ADR-002, ADR-003, ADR-004, ADR-006, ADR-008, ADR-009, ADR-012, ADR-013, ADR-015
 
-## 1. Hoje (protótipo v21)
+## 1. Hoje (protótipo v21, build com Vite desde a S02)
 
 ```
-web/app.js      3D: three.js r128 (CDN, global), rig, 22 exercícios, câmera     4.827 linhas · 366 KB
-web/treino.js   jornada: store, telas, sessão ao vivo, roteador por hash (IIFE)   925 linhas ·  89 KB
-web/pontos.js   gamificação (colado DENTRO de treino.js pelo build)               355 linhas ·  35 KB
-web/treino.css  estilos da jornada                                                 492 linhas ·  39 KB
-web/build.py    concatena tudo num único index.html (559 KB, sem <!doctype>)
-web/body-model.wasm  modelo GLB de 4,15 MB (o Artifact não serve .glb)
+src/3d/app3d.js        3D: three.js r128 (npm, global window.THREE), rig, 22 exercícios, câmera   4.827 linhas · 366 KB
+src/jornada/treino.js  jornada: store, telas, sessão ao vivo, roteador por hash (IIFE)           925 linhas ·  89 KB
+src/jornada/pontos.js  gamificação (colada DENTRO de treino.js pelo plugin do vite.config.js)    355 linhas ·  35 KB
+src/styles/            app.css (casca) + treino.css (jornada)
+index.html             casca completa (doctype, tema sem piscar, menu da biblioteca)
+public/modelos/body-model-v1.glb   modelo GLB de 4,15 MB
+Saídas: dist/ (web) e dist-artifact/ (arquivo único + body-model.wasm para o Artifact; ADR-015)
 Dados: window.claude.use('db') (API no estilo Firestore) ou localStorage
 ```
+
+Até a S02 era `web/` + `build.py` (concatenação num `index.html` de 559 KB sem `<!doctype>`, three pelo jsDelivr).
 
 As peças conversam assim:
 
@@ -42,7 +45,7 @@ Diagnóstico completo: [S00 — Análise e plano](S00-analise-e-plano).
 | Camada | Escolha | Observações |
 |---|---|---|
 | Front | **Vite** + JavaScript puro (ES modules), sem framework de UI | O código da jornada continua com renderização por `innerHTML` + `esc()`; roteamento por `location.hash` (sem rewrites) |
-| 3D | **three@0.128.0** via npm (versão fixa) | `app3d.js` (ex-`web/app.js`) **intocado**; `three-setup.js` expõe `window.THREE` + `OrbitControls` + `GLTFLoader` (jsm r128). Carregado por `import()` dinâmico só quando o app precisa do 3D |
+| 3D | **three@0.128.0** via npm (versão fixa) | `app3d.js` (ex-`web/app.js`) **intocado** (só a URL do modelo mudou na S02); `three-setup.js` expõe `window.THREE` + `OrbitControls` + `GLTFLoader` (jsm r128). Carregado por `import()` dinâmico só quando o app precisa do 3D (S03; na S02 ainda carrega junto) |
 | Modelo | `public/modelos/body-model-v1.glb` | Volta a ser `.glb`, com a versão no nome para cache imutável pelos headers da Vercel. Crédito CC BY 4.0 no rodapé |
 | Dados no aparelho | `src/dados/store.js` com a **mesma interface** que o código usa hoje (`put`/`del`/`S.*`) | Adaptadores: `nuvem` (Supabase), `local` (localStorage, para testes e preview sem backend) e `artifact` (db do claude.ai, só até a S09) |
 | Fila offline | IndexedDB (fallback localStorage) | Toda escrita entra primeiro na fila persistente e depois sobe; sobrevive a fechar o app (ADR-008) |
@@ -73,10 +76,11 @@ supabase/
   migrations/            NNNN_descricao.sql — schema + RLS + funções
   tests/                 *.test.sql (pgTAP) — testes de política
   seed.sql               dados de desenvolvimento (nunca produção)
-scripts/                 seed da biblioteca, importação do Arthur, check-claude-md
+scripts/                 seed da biblioteca, importação do Arthur, check-claude-md, build-artifact (até a S09)
 tests/
   unit/                  vitest (core, dados)
-  e2e/                   Playwright com asserts (smoke, jornada, sessão offline, ranking)
+  e2e/                   Playwright com asserts (S02: smoke, exercicios, jornada, calistenia, gamificacao; depois sessão offline, ranking)
+  visual/                prints da skill 3D (ex, mini, mob) e conferência do dist-artifact/
   golden/                saídas de referência da pontuação v21
 seed/                    JSON dos PDFs (fonte da biblioteca inicial)
 data/                    cópia do histórico do Arthur (até a S08)
@@ -85,7 +89,7 @@ docs/claude/             detalhe de implementação para a IA (Exercicios-3D, Mo
 tools/, third_party/     geração do modelo (não vão para o app)
 ```
 
-`dist/` e `web/out/` são saída de build: **nunca ler, varrer nem editar**.
+`dist/`, `dist-artifact/`, `test-results/`, `playwright-report/` e `tests/visual/out/` são saída de build e de teste (fora do git): **nunca ler, varrer nem editar**.
 
 ## 4. Ambientes
 
