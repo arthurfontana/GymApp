@@ -1,3 +1,4 @@
+// #region: utilitarios
 (function(){
 const stage=document.getElementById('stage');
 let host=stage; /* onde o canvas está: palco do exercício ou prévia da sessão */
@@ -15,6 +16,7 @@ const sstep=(a,b,x)=>{let t=(x-a)/(b-a);t=t<0?0:t>1?1:t;return t*t*(3-2*t);};
 const ease=s=>s<=0?0:s>=1?1:.5-.5*Math.cos(Math.PI*s);
 const $=id=>document.getElementById(id);
 
+// #region: renderer-cena
 /* ---------- Renderer / cena ---------- */
 const renderer=new THREE.WebGLRenderer({antialias:true,preserveDrawingBuffer:!!window.__TEST__});
 renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
@@ -54,6 +56,7 @@ function railIn(parent,a,b,r=.022,mat=mats.steel){const m=meshIn(parent,new THRE
 function ik(S,H,a,b,pole){const d=H.clone().sub(S);let L=d.length();L=Math.min(Math.max(L,Math.abs(a-b)+1e-3),a+b-1e-4);const e=d.normalize();const ca=(a*a+L*L-b*b)/(2*a*L);const sa=Math.sqrt(Math.max(0,1-ca*ca));const pp=pole.clone().addScaledVector(e,-pole.dot(e)).normalize();return S.clone().addScaledVector(e,a*ca).addScaledVector(pp,a*sa);}
 function lineIn(parent,pts){const l=new THREE.Line(new THREE.BufferGeometry().setFromPoints(pts),mats.guide);parent.add(l);return l;}
 
+// #region: rig-esqueleto
 /* ---------- Esqueleto de animação (pontos anatômicos do modelo, pose anatômica) ---------- */
 /* coordenadas do modelo (T-pose, escalado para 1,75 m): Y para cima, +Z anterior, +X lado esquerdo anatômico */
 const LM={P:[0,.90,-.03],neck:[0,1.47,-.04],Sj:[.195,1.36,-.04],E:[.54,1.35,-.02],G:[.84,1.31,.012],MCP:[.862,1.352,.015],
@@ -66,6 +69,7 @@ const SB=['shH','ua','elH','fn','ft','fing','hipH','th','knH','sn','anH','foot']
 const bi=(name,m)=>3+(m>0?0:12)+SB.indexOf(name);
 const NB=27;
 
+// #region: cinematica
 /* ---------- Cinemática ---------- */
 const mTmp=new THREE.Matrix4();
 function basisQ(y,ref){const yy=y.clone().normalize();const x=ref.clone().addScaledVector(yy,-ref.dot(yy)).normalize();const z=new THREE.Vector3().crossVectors(x,yy);
@@ -121,6 +125,7 @@ function legBones(bones,qT,s,hip,A,lpole,qFoot){
 }
 const kneeAngle=(hip,K,A)=>hip.clone().sub(K).angleTo(A.clone().sub(K))/DEG;
 
+// #region: pesos-deformacao
 /* ---------- Pesos de deformação ---------- */
 function weightsFor(x,y,z){
   const m=x>=0?1:-1, ax=Math.abs(x), xm=x*m;
@@ -163,6 +168,7 @@ function segInfo(px,py,pz,a,b){const ax=b.x-a.x,ay=b.y-a.y,az=b.z-a.z;const Ln=M
   const vx=px-a.x,vy=py-a.y,vz=pz-a.z;const t=vx*dx+vy*dy+vz*dz;const tc=t<0?0:t>Ln?Ln:t;
   return {t,d:Math.hypot(vx-dx*tc,vy-dy*tc,vz-dz*tc),L:Ln,cx:a.x+dx*tc,cz:a.z+dz*tc};}
 
+// #region: mascaras
 /* ---------- Regiões musculares no corpo em T-pose (medidas sobre o relevo do modelo) ---------- */
 const band=(v,a,b,e=.008)=>sstep(a-e,a+e,v)*(1-sstep(b-e,b+e,v));
 /* faixa angular em graus em volta do eixo do membro: 0 = frente, +90 = lateral, ±180 = trás, −90 = medial */
@@ -244,6 +250,7 @@ function masks(x,y,z,nx,ny,nz){
 }
 const MASK={};
 
+// #region: carga-modelo
 /* ---------- Carrega o modelo e cria o rig ---------- */
 let body=null, skel=null, colorAttr=null, baseCol=null;
 const boneObjs=[];
@@ -303,6 +310,7 @@ function buildBody(gltf){
 /* ====================================================================================
    EXERCÍCIO 1 — SUPINO INCLINADO COM HALTERES
    ==================================================================================== */
+// #region: utils-peso-do-corpo
 /* ---------- Utilidades dos exercícios com peso do corpo ---------- */
 const WREST=[1,-1].map(m=>L('E',m).lerp(L('G',m),.82));
 /* dobra o punho (rotação da mão em volta do punho, no espaço do modelo); a>0 = extensão (dorso da mão para trás) */
@@ -318,6 +326,7 @@ function setArcBW(line,c,a,b,off,r){const pos=line.geometry.attributes.position;
 const fkSag=(A,al,th,sag)=>{const K=V(A.x+LEN.sn*Math.sin(al*DEG)*sag,A.y+LEN.sn*Math.cos(al*DEG),0);return {K,P:V(K.x+LEN.th*Math.sin(th*DEG)*sag,K.y+LEN.th*Math.cos(th*DEG),0)};};
 const errAmt=(errMode,t,T_END)=>{const rep=errMode&&t<T_END?1:0, tr=t%T_END;const amt=errMode?(rep?1:1-sstep(0,.45,tr)):0;return {rep,tr,amt,err:errMode&&amt>0?errMode:null};};
 
+// #region: ex-sup
 const SUP=(function(){
   const grp=new THREE.Group(), guides=new THREE.Group();scene.add(grp);grp.add(guides);
   const BENCH=30*DEG, SEAT_H=.45;
@@ -502,6 +511,7 @@ const SUP=(function(){
   };
 })();
 
+// #region: ex-lpx
 /* ====================================================================================
    EXERCÍCIO 2 — LEG PRESS 45°
    ==================================================================================== */
@@ -781,6 +791,7 @@ const LPX=(function(){
   };
 })();
 
+// #region: ex-row
 /* ====================================================================================
    EXERCÍCIO 3 — REMADA SENTADA NA POLIA BAIXA (puxador triangular)
    ==================================================================================== */
@@ -1059,6 +1070,7 @@ const ROW=(function(){
   };
 })();
 
+// #region: ex-stf
 /* ====================================================================================
    EXERCÍCIO 4 — STIFF COM HALTERES
    ==================================================================================== */
@@ -1245,6 +1257,7 @@ const STF=(function(){
   };
 })();
 
+// #region: ex-lat
 /* ====================================================================================
    EXERCÍCIO 5 — ELEVAÇÃO LATERAL COM HALTERES
    ==================================================================================== */
@@ -1446,6 +1459,7 @@ const LAT=(function(){
   };
 })();
 
+// #region: ex-tri
 /* ====================================================================================
    EXERCÍCIO 6 — TRÍCEPS NA POLIA ALTA COM CORDA
    ==================================================================================== */
@@ -1693,6 +1707,7 @@ const TRI=(function(){
   };
 })();
 
+// #region: ex-plk
 /* ====================================================================================
    EXERCÍCIO 7 — PRANCHA ABDOMINAL FRONTAL SOBRE ANTEBRAÇOS (isométrico)
    ==================================================================================== */
@@ -1887,6 +1902,7 @@ const PLK=(function(){
   };
 })();
 
+// #region: ex-gob
 /* ====================================================================================
    EXERCÍCIO 8 — AGACHAMENTO GOBLET COM HALTER
    ==================================================================================== */
@@ -2076,6 +2092,7 @@ const GOB=(function(){
   };
 })();
 
+// #region: ex-pdn
 /* ====================================================================================
    EXERCÍCIO 9 — PUXADA ALTA NA POLIA PELA FRENTE (LAT PULLDOWN)
    ==================================================================================== */
@@ -2317,6 +2334,7 @@ const PDN=(function(){
   };
 })();
 
+// #region: ex-flx
 /* ====================================================================================
    EXERCÍCIO 10 — MESA FLEXORA DEITADA (prone leg curl)
    ==================================================================================== */
@@ -2557,6 +2575,7 @@ const FLX=(function(){
   };
 })();
 
+// #region: ex-rsc
 /* ====================================================================================
    EXERCÍCIO 11 — ROSCA BÍCEPS EM PÉ COM HALTERES (supinada, simultânea)
    ==================================================================================== */
@@ -2727,6 +2746,7 @@ const RSC=(function(){
   };
 })();
 
+// #region: ex-clf
 /* ====================================================================================
    EXERCÍCIO 12 — PANTURRILHA EM PÉ NA MÁQUINA (standing calf raise)
    ==================================================================================== */
@@ -2954,6 +2974,7 @@ const CLF=(function(){
   };
 })();
 
+// #region: ex-chp
 /* ====================================================================================
    SUPINO NA MÁQUINA — supino horizontal sentado, braços articulados convergentes, pegada neutra
    Pessoa de frente para +X, lado direito = +Z. Cada pegador gira em volta de um eixo fixo
@@ -3267,6 +3288,7 @@ const CHP=(function(){
   };
 })();
 
+// #region: ex-hpt
 /* ====================================================================================
    ELEVAÇÃO PÉLVICA COM BARRA (barbell hip thrust)
    Banco atravessado atrás da pessoa (comprimento em Z). Cabeça para −X, peito para cima,
@@ -3489,6 +3511,7 @@ const HPT=(function(){
 })();
 
 /* @@ex_bw1.js@@ */
+// #region: ex-sql
 /* ====================================================================================
    AGACHAMENTO LIVRE (peso do corpo, braços à frente como contrapeso)
    ==================================================================================== */
@@ -3622,6 +3645,7 @@ const SQL=(function(){
   };
 })();
 
+// #region: ex-gmn
 /* ====================================================================================
    BOM DIA SEM CARGA (dobradiça do quadril, braços cruzados no peito)
    ==================================================================================== */
@@ -3760,6 +3784,7 @@ const GMN=(function(){
 
 /* @@ex_bw1.js@@END */
 /* @@ex_bw2.js@@ */
+// #region: ex-kpu
 /* ====================================================================================
    FLEXÃO COM JOELHOS APOIADOS (knee push-up). De bruços, cabeça para +X, peito para baixo.
    O corpo é uma linha reta joelho-quadril-ombro que gira em volta dos joelhos; mãos fixas.
@@ -3896,6 +3921,7 @@ const KPU=(function(){
   };
 })();
 
+// #region: ex-wpu
 /* ====================================================================================
    FLEXÃO NA PAREDE (wall push-up). Em pé de frente para a parede (em +X); corpo reto gira
    em volta dos tornozelos; mãos fixas na parede na altura dos ombros.
@@ -4032,6 +4058,7 @@ const WPU=(function(){
 
 /* @@ex_bw2.js@@END */
 /* @@ex_bw3.js@@ */
+// #region: ex-brg
 /* ====================================================================================
    PONTE DE GLÚTEOS no solo. Deitado de costas, cabeça para −X; as escápulas ficam no chão
    (ponto de apoio C) e a pelve sobe girando em volta delas.
@@ -4157,6 +4184,7 @@ const BRG=(function(){
   };
 })();
 
+// #region: ex-dbg
 /* ====================================================================================
    DEAD BUG contralateral. Deitado de costas, cabeça para −X, braços para o teto e pernas em 90/90.
    Uma repetição: braço direito + perna esquerda; a seguinte troca de lado.
@@ -4280,6 +4308,7 @@ const DBG=(function(){
 
 /* @@ex_bw3.js@@END */
 /* @@ex_bw4.js@@ */
+// #region: ex-bdg
 /* ====================================================================================
    BIRD DOG contralateral. Quatro apoios, cabeça para +X, peito para baixo.
    Uma repetição: braço direito + perna esquerda; a seguinte troca de lado.
@@ -4424,6 +4453,7 @@ const BDG=(function(){
   };
 })();
 
+// #region: ex-lng
 /* ====================================================================================
    AFUNDO PARA TRÁS (reverse lunge). Em pé de frente para +X; a perna que recua dá um passo
    para trás, desce até ~90° nos dois joelhos e volta. A repetição seguinte troca a perna.
@@ -4568,10 +4598,12 @@ const LNG=(function(){
 })();
 
 /* @@ex_bw4.js@@END */
+// #region: exs-registro
 const EXS={'supino-inclinado':SUP,'leg-press-45':LPX,'remada-sentada':ROW,'stiff-halteres':STF,'elevacao-lateral':LAT,'triceps-polia':TRI,'prancha':PLK,'agachamento-goblet':GOB,'puxada-alta':PDN,'mesa-flexora':FLX,'rosca-biceps':RSC,'panturrilha-em-pe':CLF,'supino-maquina':CHP,'elevacao-pelvica':HPT,'agachamento-livre':SQL,'bom-dia':GMN,'flexao-joelhos':KPU,'flexao-parede':WPU,'ponte-gluteos':BRG,'dead-bug':DBG,'bird-dog':BDG,'afundo-tras':LNG};
 let EXC=null;
 window.__EX_IDS=Object.keys(EXS);
 
+// #region: tema
 /* ---------- Tema ---------- */
 let COL={};
 function applyTheme(){
@@ -4590,6 +4622,7 @@ applyTheme();
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change',applyTheme);
 new MutationObserver(applyTheme).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
 
+// #region: cameras
 /* ---------- Câmeras ---------- */
 let view='lateral', tween=null;
 function viewPose(k){const v=EXC.ex.views[k];const a=host.clientWidth/Math.max(1,host.clientHeight);const pf=EXC.ex.portrait||1.4;const f=a<1?pf:a<1.3?1+(pf-1)*.3:1;
@@ -4602,6 +4635,7 @@ function setView(k,instant){view=k;document.querySelectorAll('[data-view]').forE
   if(EXC.ex.viewChanged)EXC.ex.viewChanged(k);
 }
 
+// #region: reproducao
 /* ---------- Estado de reprodução ---------- */
 let t=0, playing=!reduce&&!window.__TEST__, speed=1, loopMov=true, showMus=true, showGuide=true, showParts=false, iso=null;
 const framesEl=$('frames'), ticks=$('ticks'), legend=$('legend'), tagsEl=$('tags'), roEl=$('readouts'), errBadge=$('errBadge');
@@ -4687,6 +4721,7 @@ $('tSide').addEventListener('click',()=>{const ex=EXC&&EXC.ex;if(ex&&ex.flipSide
 function resize(){const w=host.clientWidth,h=host.clientHeight;if(!w||!h)return;renderer.setSize(w,h,false);camera.aspect=w/h;camera.updateProjectionMatrix();}
 new ResizeObserver(resize).observe(stage);resize();
 
+// #region: cores-musculares
 /* ---------- Cores musculares ---------- */
 function paintMuscles(){
   if(!colorAttr)return;let dirty=false;const c=colorAttr.array;
@@ -4704,6 +4739,7 @@ function paintMuscles(){
   colorAttr.needsUpdate=true;
 }
 
+// #region: loop
 /* ---------- Loop ---------- */
 const clock=new THREE.Clock();
 const fmt=x=>x.toFixed(1).replace('.',',');
@@ -4778,6 +4814,7 @@ function frame(dtOverride){
   EXC.guideTags.forEach(({e,pt})=>placeTag(e,pt.pos(),showGuide&&!showParts&&(!pt.views||pt.views.includes(view))));
 }
 const exView=document.getElementById('exView');
+// #region: mini
 /* ---------- Prévia animada na tela da sessão (mesmo renderer, levado para outro container) ---------- */
 const mini={el:null,id:null,vis:true,cap:null,saved:null,io:null,ro:null};
 function miniOff(){
@@ -4809,9 +4846,11 @@ window.__mini=(el,id)=>{
   if(window.__TEST__){t=ex.keys[Math.min(4,ex.keys.length-1)].t;for(let i=0;i<3;i++)frame(0);}
 };
 function loop(){if(EXC&&(!exView.hidden||(mini.el&&mini.vis&&mini.el.isConnected&&!document.hidden)))frame();requestAnimationFrame(loop);}
+// #region: enter-exercise
 window.__enterExercise=(id)=>{const ex=EXS[id];if(!ex)return;miniOff();if(!EXC||EXC.ex!==ex)mountExercise(ex);resize();setView(ex.defaultView||'lateral',true);t=0;
   if(ex.setErr){ex.setErr(null);syncErr();}setPlaying(!reduce&&!window.__TEST__);};
 
+// #region: carga-modelo-fetch
 const loadFail=err=>{loadingEl.textContent='Não foi possível carregar o modelo anatômico. Recarregue a página.';console.error(err);};
 /* o arquivo GLB é publicado com extensão .wasm porque o host só serve tipos web padrão */
 fetch('body-model.wasm').then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);return r.arrayBuffer();})
@@ -4820,6 +4859,7 @@ fetch('body-model.wasm').then(r=>{if(!r.ok)throw new Error('HTTP '+r.status);ret
     if(window.__TEST__)window.__READY__=true;
   },loadFail)).catch(loadFail);
 
+// #region: ganchos-teste
 if(window.__TEST__){window.__EXC=()=>EXC;window.__go=(tt,vw,cp,ct,err)=>{if(err!==undefined&&EXC.ex.setErr){EXC.ex.setErr(err);syncErr();}t=tt;if(vw)setView(vw,true);tween=null;if(cp){camera.position.set(...cp);controls.target.set(...ct);}for(let i=0;i<3;i++)frame(0);return true;};
   window.__parts=v=>{showParts=v;syncToggles();};}
 else requestAnimationFrame(loop);

@@ -81,7 +81,7 @@ tests/
 seed/                    JSON dos PDFs (fonte da biblioteca inicial)
 data/                    cópia do histórico do Arthur (até a S08)
 docs/wiki/               documentação normativa (sincroniza com a Wiki)
-docs/claude/             detalhe de implementação para a IA (S01)
+docs/claude/             detalhe de implementação para a IA (Exercicios-3D, Motor-3D, Build-e-Publicacao, Mapa-de-Regioes)
 tools/, third_party/     geração do modelo (não vão para o app)
 ```
 

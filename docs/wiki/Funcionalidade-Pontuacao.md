@@ -3,7 +3,7 @@
 > **Estado**: ✅ Em produção no Artifact (v21, calculada no aparelho) · 🔮 módulo puro com fuso explícito (S10) · 🔮 cálculo oficial no servidor (S11)
 > **DECs relacionadas**: ADR-004, ADR-009
 > **Última sessão que alterou esta página**: S00
-> O detalhe das regras v21 está hoje no `CLAUDE.md` §2d e em `web/pontos.js`. **A S01 move o detalhe para cá** (§8). A tabela `PX` fica no código (`catalogo.js`) e a régua para exercício novo, na skill `animacao-3d-exercicio` §3a.
+> O detalhe das regras (pontos, bônus, XP, ligas, desafios, conquistas, calorias e telas) está em §8, e o código em `web/pontos.js` (mapa de regiões em `docs/claude/Mapa-de-Regioes.md`). A tabela `PX` fica no código (`catalogo.js`) e a régua para exercício novo, na skill `animacao-3d-exercicio` §3a.
 
 ## 1. O que é e para quem
 
@@ -114,6 +114,16 @@ Telas v21 mantidas. Novos elementos: selo "✓ Pontos confirmados" no resumo, li
 
 Pontos por foto ou vídeo, validação por terceiros (o professor confirmar), pontos por passos do celular, recompensas fora do app.
 
-## 8. Detalhe das regras v21
+## 8. Detalhe das regras (estado atual do protótipo)
 
-*(A S01 move para cá o conteúdo de `CLAUDE.md` §2d: pontos da série, fator de carga, bônus, sequência e escudos, ritmo, fora do treino, XP e níveis, ligas, desafios, conquistas, calorias e as telas.)*
+Origem: pontos que crescem com repetições, carga e intensidade do exercício; visão gamificada; pontos que expiram se parar de treinar; calorias; pensar numa competição futura entre amigos. Código em **`pontos.js`** (incluído por `build.py` no lugar do marcador `/*@@PONTOS@@*/` do `treino.js`); estilos no fim do `treino.css`.
+- **Nada é guardado à parte**: `jogo()` recalcula tudo das sessões concluídas + marcações das fichas, a cada render (`G` zera no `render()`). Mudou a regra, o histórico acompanha. Peso do perfil fica em `config/programa.perfil` `{apelido, peso, meta}` (Arthur: 78,5 kg do PDF, meta 2); a sessão guarda `pesoCorp` ao começar.
+- **Pontos da série** = reps (×2 se `lado`) × `PX[id].r` (pts/rep) × fator de carga; prancha 0,5/s. Fator de carga = √(carga total ÷ (`ref` × peso corporal)), entre 0,5 e 2; sem carga registrada = 0,5. Tabela `PX` (reavaliação da biblioteca): leg press 3,0 · goblet 2,8 · stiff/hip thrust 2,6 · supino halteres 2,2 · supino máquina/remada/puxada 2,0 · afundo 1,8 · mesa flexora/agachamento livre/flexão joelhos 1,6 · panturrilha/elev. lateral/tríceps/rosca 1,2 · ponte 1,0 · flexão parede/bom dia 0,8 · bird dog/dead bug 0,7. Intensidade 1–5 aparece na biblioteca (`intensTag`), na folha de adicionar e na tabela das regras.
+- **Bônus do treino**: recorde pessoal +15 por exercício (maior carga, maior 1RM Epley, mais reps sem carga, mais tempo) · exercício novo +10 · completo +20 · aquecimento guiado +5 (`s.aqGuiado`). **Sequência**: +5% por semana seguida na meta (até +25%). **Ritmo**: se o tempo ativo < mínimo plausível (2 s/rep + 15 s entre séries), o treino vale proporcionalmente menos (≥ 0,9 conta inteiro).
+- **Fora do treino**: caminhada marcada +10, peso/cintura +5 (marcações agora em `conjunto.fichas[<segunda ms>] = {cam1: timestamp}`; o antigo `semana` é lido por `fichasDe`), desafios +20/+30, conquistas +15 a +200.
+- **XP** (nunca expira) → nível: XP do nível n = 150·(n−1)^1,9; títulos Iniciante (1), Em ritmo (5), Constante (10), Dedicado (15), Atleta (20), Fera (30), Lenda (40). **Liga** = pontos dos últimos 28 dias: Bronze 0 · Prata 800 · Ouro 2.000 · Platina 3.500 · Diamante 5.500; mostra quanto vence nos próximos 7 dias. **Sequência** quebra em semana abaixo da meta, salvo **escudo** (1 a cada 4 semanas seguidas, máx. 2).
+- **Desafios da semana** (`desafiosDa`): fixo "Faça N treinos" (+30) + 2 do conjunto (recorde, 20 séries, 200 reps, 2 completos, exercício novo, 400 kcal, 2 aquecimentos, 3 caminhadas), escolhidos pelo número da semana. **20 conquistas** (`CONQ`) em categorias de cor (frequência, sequência, força, casa, especiais).
+- **Calorias**: MET (Compendium of Physical Activities 2024) × peso × tempo ativo (intervalo antes de cada série, máx. 5 min). MET por exercício em `PX.met` (5,0 agachamento/terra; 3,5 musculação; 3,8 calistenia moderada; 2,8 leve/prancha); circuito no mínimo 5,0 (02035); caminhada 3,8 (17190).
+- **Telas**: card do placar no Início (nível, XP, liga, sequência, kcal da semana) → `#pontos` "Minha jornada" (nível, liga, sequência/escudos, calorias, total levantado com comparação divertida, desafios, gráfico de pontos por semana, recordes, conquistas, extrato com validade, card "Ranking com amigos — em breve", regras completas com tabela). Sessão: pontos ao vivo na barra, "+N" subindo a cada série e aviso de recorde com som. Resumo: card "Pontos do treino" com contagem animada, linhas do cálculo, recordes, nível antes/depois e confete (respeita reduzir movimento). Treino e card "Próximo treino" mostram ~pts estimados. Perfil (nome no placar, peso, meta semanal) pela página da jornada.
+- Cuidado: `.badge` já existe na biblioteca 3D; as conquistas usam `.medalha`/`.medalhas`.
+- Ranking com amigos (próximo passo): exige dados por pessoa (`data/users/<id>/…` ou regras `{self}`) e um placar compartilhado; a regra de pontos já é relativa ao peso corporal para ser justa.
