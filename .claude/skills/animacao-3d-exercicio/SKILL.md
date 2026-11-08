@@ -8,7 +8,7 @@ description: Cria ou altera a animação 3D de um exercício no Meu Treino 3D a 
 Cada briefing do Arthur vira **um exercício novo** na biblioteca, no mesmo padrão dos 22 existentes. Não invente outro formato: copie a estrutura de um exercício parecido e adapte.
 
 ## 0. Antes de começar
-1. Leia `CLAUDE.md` (§4: coordenadas do mundo, rig, músculos, "Estrutura de um exercício") e o exercício-modelo em `web/app.js`.
+1. Leia `docs/claude/Motor-3D.md` (coordenadas do mundo, rig, músculos, "Estrutura de um exercício") e o exercício-modelo em `web/app.js`.
 2. Escolha o modelo mais parecido:
    - **Sem equipamento, alterna lado:** `DBG` (dead bug), `BDG` (bird dog), `LNG` (afundo)
    - **Isométrico (sustentação):** `PLK` (prancha), `BRG` (ponte), `HPT` (hip thrust)
@@ -37,7 +37,7 @@ Objetivo · equipamento · posição inicial · execução (excêntrica/concênt
 | `web/index.html` (menu, `<main id="menuView">`) | card `<a class="ex" href="#id">` no grupo muscular certo, com número sequencial, nome, `badge` e 2 chips; renumerar se inserir no meio |
 | `web/treino.js` → `LIB` | `{nome, grupo, foco, passo?, porHalter?, principal?, semCarga?, tipo?:'tempo', lado?, eq:[...], eqTxt}` |
 | `web/pontos.js` → `PX` | `r`/`s`, `ref` e `met` decididos pela régua da **seção 3a** (obrigatório) |
-| `CLAUDE.md` §2 | item numerado novo com parâmetros, vistas, cores, tempo (T_END) e erros; atualizar contagem (N exercícios, N sem equipamento) e o "Menu" |
+| `docs/claude/Exercicios-3D.md` (seção numerada) | item numerado novo com parâmetros, vistas, cores, tempo (T_END) e erros; atualizar contagem (N exercícios, N sem equipamento) e o "Menu" |
 | `web/tests/mini.mjs` | incluir o id para a prévia do cartão |
 
 Depois de editar: `cd web && python3 build.py` (**nunca** editar o `<script>` de `index.html` na mão).
@@ -73,6 +73,6 @@ Ajuste fino: +0,2 se a amplitude for grande ou o equilíbrio exigir muito; −0,
 4. Conferir que o exercício aparece em "Adicionar exercício" e na tabela de intensidade das regras.
 
 ## 5. Entrega
-- Atualizar o `CLAUDE.md`, commitar (`feat: exercício <nome>`) e dar push.
-- **Publicar no mesmo Artifact** (URL no `CLAUDE.md`, §4 "Publicar"): `Artifact read` na URL, depois publicar `web/index.html` com `files={"body-model.wasm":"web/body-model.wasm"}`.
+- Atualizar `docs/claude/Exercicios-3D.md`, commitar (`feat: exercício <nome>`) e dar push.
+- **Publicar no mesmo Artifact** (URL e passos em `docs/claude/Build-e-Publicacao.md`): `Artifact read` na URL, depois publicar `web/index.html` com `files={"body-model.wasm":"web/body-model.wasm"}`.
 - Resposta final ao Arthur, em pt-BR curto: o que foi criado (nome, grupo, vistas, nº de erros), decisões tomadas onde o briefing era aberto, pontos/intensidade escolhidos. Sem relatório de passos.

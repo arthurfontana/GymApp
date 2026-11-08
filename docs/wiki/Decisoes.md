@@ -131,9 +131,11 @@ As páginas de funcionalidade dizem **como o sistema é**. Esta página diz **po
 
 ## ADR-012: Guardrails de contexto no repositório
 
-**Decisão:** `CLAUDE.md` vira um índice enxuto (teto de 450 linhas, guard no CI); a documentação normativa fica em `docs/wiki/` (sincronizada com a Wiki); o detalhe de implementação, em `docs/claude/`; e há âncoras de região nos arquivos grandes (`app3d.js`, `treino.js`). Segue as skills `especificacao-e-sessoes` e `guardrails-de-contexto`.
+**Decisão:** `CLAUDE.md` vira um índice enxuto (teto de 450 linhas, guard `scripts/check-claude-md.mjs` no CI); a documentação normativa fica em `docs/wiki/` (sincronizada com a Wiki); o detalhe de implementação, em `docs/claude/` (`Exercicios-3D`, `Motor-3D`, `Build-e-Publicacao`, `Mapa-de-Regioes`); e há âncoras de região `// #region: <slug>` (sem par de fechamento, só `grep`) nos arquivos grandes (hoje `web/app.js`, `web/treino.js`, `web/pontos.js`; `app3d.js` e `treino.js` depois da S02). Segue as skills `especificacao-e-sessoes` e `guardrails-de-contexto`.
 
-**Contexto:** o `CLAUDE.md` tem 52 KB (cerca de 13 mil tokens) e cresce a cada exercício, como um changelog.
+**Contexto:** o `CLAUDE.md` tinha 52 KB (cerca de 13 mil tokens) e crescia a cada exercício, como um changelog.
+
+**Status:** ✅ confirmada e aplicada na S01. Regra de manutenção: feature nova ganha no máximo 1 linha no mapa "Onde vive o quê"; estourou o teto, poda antes de escrever (nunca apagar: mover para o lar certo).
 
 ---
 
@@ -150,3 +152,30 @@ As páginas de funcionalidade dizem **como o sistema é**. Esta página diz **po
 **Contexto:** o pedido foi "biblioteca disponível para todo mundo" **que está logado**. Abrir a biblioteca 3D sem login seria possível (o catálogo é código), mas é uma decisão de produto.
 
 **Trade-off aceito:** não dá para mostrar um exercício a quem ainda não tem convite. Pergunta em aberto P3 no [Roadmap](Roadmap-e-Sessoes): se o Arthur quiser, uma ADR nova abre `#biblioteca` e `#<exercício>` ao público.
+
+---
+
+## Decisões do protótipo (ADR-000a a ADR-000g)
+
+Registradas na S01 a partir do histórico do `CLAUDE.md`. São anteriores ao plano de evolução; formato curto.
+
+### ADR-000a: Visual de "estátua anatômica" (estilo Treino Mestre)
+A primeira versão usava um manequim procedural (cápsulas). O Arthur quis o estilo do app Treino Mestre: figura branca/cinza musculosa, com o músculo-alvo em vermelho. Isso levou a trocar o manequim por um modelo anatômico.
+
+### ADR-000b: Atlas anatômico fitmitwith descartado
+Testado o atlas **fitmitwith-anatomy-atlas** (CC BY-SA 4.0, músculos separados). O Arthur achou "feio". O atlas fica em `third_party/` (manter `ATTRIBUTION` e `LICENSE`) e serviu de base para `tools/`.
+
+### ADR-000c: Modelo "Male base muscular anatomy" (CharacterZone)
+Escolhido o modelo do Sketchfab (CC BY 4.0), de pele contínua com relevo muscular esculpido. O Arthur baixou o `.glb` (≈ 3 MB, textura 1k). A textura de pele foi trocada por branco fosco, mantendo o normal map e o AO, o que dá o visual de estátua. **Aprovado.** O rodapé exige o crédito (ver [Exercicios-3D](../claude/Exercicios-3D.md)).
+
+### ADR-000d: Um único modelo para todos os exercícios, e menu antes do 2º exercício
+O mesmo boneco serve a todos ("usando o mesmo modelo de boneco"). O menu de exercícios foi criado antes de adicionar o segundo exercício, a pedido do Arthur.
+
+### ADR-000e: Supino inclinado refeito pelo briefing novo
+A primeira versão tinha uma sequência de sentar com os halteres nas coxas e deitar antes dos 7 frames de movimento. Foi refeita para 9 frames só do movimento, com pegada pronada e as vistas Lateral/Frontal/45°/Anatomia (parâmetros atuais em [Exercicios-3D](../claude/Exercicios-3D.md)).
+
+### ADR-000f: Artifact único, tudo inline, GLB publicado como `.wasm`
+O host do Artifact só serve tipos web padrão e scripts de CDNs permitidos: o HTML tem CSS e JS inline, o Three.js r128 vem do jsDelivr em versão fixa, e o binário GLB é publicado com o nome `body-model.wasm`. Substituída pelo plano de evolução (ADR-002/011) quando o app sair do Artifact.
+
+### ADR-000g: Tema claro como padrão
+O tema padrão é **claro**, mesmo com o celular em modo escuro; a escolha fica no aparelho (`localStorage['mt3d.theme']`) e é aplicada antes do conteúdo, sem piscar.

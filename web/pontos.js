@@ -2,6 +2,7 @@
 /* Nada de placar guardado à parte: tudo é recalculado a partir das sessões gravadas.
    Assim a regra é igual para todos, dá para conferir cada ponto e, se a regra mudar, o histórico acompanha. */
 
+// #region: px
 /* Biblioteca reavaliada para a pontuação.
    r   = pontos por repetição (intensidade: massa muscular envolvida + exigência do movimento)
    s   = pontos por segundo (isométricos)
@@ -32,6 +33,7 @@ const PX={
   'bird-dog':{r:.7,met:2.8},
   'dead-bug':{r:.7,met:2.8},
 };
+// #region: regras-constantes
 const MET_CIRC=5.0, MET_CAM=3.8;   /* 02035 circuito moderado · 17190 caminhada 2,8–3,4 mph */
 const P_REC=15, P_NOVO=10, P_COMPLETO=20, P_AQ=5, P_CAM=10, P_EXTRA=5;
 const DIA=864e5, JANELA=28*DIA;
@@ -40,6 +42,7 @@ const TITULOS=[[1,'Iniciante'],[5,'Em ritmo'],[10,'Constante'],[15,'Dedicado'],[
 const xpNivel=n=>Math.round(150*Math.pow(n-1,1.9));
 function nivelDe(xp){let n=1;while(xpNivel(n+1)<=xp)n++;const a=xpNivel(n),b=xpNivel(n+1);return {n,a,b,falta:b-xp,frac:Math.max(0,Math.min(1,(xp-a)/(b-a))),titulo:TITULOS.filter(t=>n>=t[0]).pop()[1]};}
 function ligaDe(p){let i=0;LIGAS.forEach((l,k)=>{if(p>=l.min)i=k;});return Object.assign({},LIGAS[i],{i,prox:LIGAS[i+1]||null});}
+// #region: regras-pontuacao
 const perfil=()=>Object.assign({apelido:'',peso:75,meta:2},(S.config&&S.config.perfil)||{});
 const nrm=t=>String(t||'').normalize('NFD').replace(/[̀-ͯ]/g,'').trim().toLowerCase();
 const ID_NOME={};Object.keys(LIB).forEach(k=>{ID_NOME[nrm(LIB[k].nome)]=k;});
@@ -98,6 +101,7 @@ function pontuar(s,best,vistos,mult,peso){
   return {base:Math.round(base),bonus,prs,novos,completo,mult,plaus,sub:Math.round(sub),
     total:Math.round(sub*mult*plaus),extraSeq:Math.round(sub*(mult-1)*plaus),series,reps,ton,kcal:T.kcal,ativo:T.ativo,minimo:T.minimo,linhas};
 }
+// #region: semanas-fichas
 /* semanas começam na segunda; somar 8 dias e voltar à segunda evita erro em horário de verão */
 const proxSeg=w=>segundaDe(w+8*DIA);
 const segAntes=(w,i)=>segundaDe(w-i*7*DIA+12*36e5);
@@ -105,6 +109,7 @@ const segAntes=(w,i)=>segundaDe(w-i*7*DIA+12*36e5);
 const fichasDe=c=>{const f=Object.assign({},c.fichas||{});if(c.semana&&c.semana.ini&&!f[c.semana.ini])f[c.semana.ini]=c.semana.k||{};return f;};
 function semanaN(c,ini){const fs=sessoesDe(c);const i0=fs.length?segundaDe(fs[fs.length-1].fim):ini;return Math.round((ini-i0)/(7*DIA))+1;}
 function camDa(c,ini){const pr=c.programa;if(!pr)return null;const n=semanaN(c,ini);const a=pr.caminhada||[];return a.find(f=>n>=f.de&&n<=f.ate)||a[a.length-1]||null;}
+// #region: desafios-conquistas
 /* desafios: 1 fixo (meta semanal) + 2 que mudam toda semana */
 const DESAFIOS=[
   {id:'rec',t:'Bata 1 recorde pessoal',alvo:1,v:s=>s.prs,p:25},
@@ -144,6 +149,7 @@ const CONQ=[
   {id:'cedo',t:'Madrugador',d:'Concluir um treino antes das 7h',p:15,ic:'sun',cat:'esp',ok:C=>C.cedo>=1},
   {id:'noite',t:'Coruja',d:'Começar um treino depois das 21h',p:15,ic:'moon',cat:'esp',ok:C=>C.noite>=1},
 ];
+// #region: jogo
 const stVazia=()=>({treinos:0,prs:0,series:0,reps:0,aq:0,completos:0,novos:0,cam:0,kcal:0,kcalT:0,pts:0,feitos:{}});
 let G=null;
 function jogo(){
@@ -196,17 +202,20 @@ function jogo(){
     kcal28:Math.round(Object.keys(W).filter(w=>+w>=segAntes(segAgora,3)).reduce((a,w)=>a+W[w].kcal,0))};
   return G;
 }
+// #region: estimativas
 /* pontos de uma sessão em andamento (ao vivo) */
 function pontosAoVivo(s){const g=jogo();return pontuar(s,g.best,g.vistos,g.multAgora,+s.pesoCorp||g.peso);}
 /* estimativa de pontos de um treino (para mostrar antes de começar) */
 function estimaPts(t){const g=jogo();let p=0;(t.itens||[]).forEach(it=>{const u=ultimaVez(it);const x=u&&u.sets[0]?u.sets[0]:{carga:0,reps:Math.round(((+it.min||0)+(+it.max||0))/2)};
   const mid=Math.round(((+it.min||0)+(+it.max||0))/2);const y=Object.assign({},x,{reps:mid});if(!u&&comCarga(it)){const px=pxDe(it);y.carga=px.ref?px.ref*g.peso/(it.porHalter?2:1):0;}
   p+=(+it.series||0)*ptsSerie(it,y,g.peso);});return Math.round(p);}
+// #region: formatacao
 const fmtN=n=>Math.round(n).toLocaleString('pt-BR');
 const fmtTon=kg=>kg>=1000?(Math.round(kg/100)/10).toLocaleString('pt-BR')+' t':fmtN(kg)+' kg';
 const COMPARA=[[600,'um piano de cauda'],[1000,'um carro popular'],[2300,'um rinoceronte'],[6000,'um elefante-africano'],[12000,'um ônibus'],[30000,'uma baleia-jubarte'],[41000,'um Boeing 737 vazio']];
 function comparacao(kg){let r=null;COMPARA.forEach(c=>{if(kg>=c[0])r=c;});if(!r)return '';const x=kg/r[0];return x>=1.95?`≈ ${Math.floor(x)} × ${r[1]}`:`≈ ${r[1]}`;}
 
+// #region: icones
 /* ---------- Ícones da gamificação ---------- */
 const gic={
   bolt:'<svg viewBox="0 0 24 24" aria-hidden="true" class="ic"><path d="M13 2.5L5 13.5h6l-1 8 8-11h-6z"/></svg>',
@@ -224,6 +233,7 @@ const gic={
 const gIcon=k=>gic[k]||icon[k]||icon.check;
 const ligaIc=l=>`<span class="liga-ic ${l.c}">${gic.shield}</span>`;
 
+// #region: telas-placar
 /* ---------- Card do placar (Início) ---------- */
 function vPlacarCard(){
   const g=jogo(),nv=g.nivel;
@@ -234,6 +244,7 @@ function vPlacarCard(){
       <span class="pl-row"><span>${ligaIc(g.liga)}<b>${fmtN(g.p28)}</b> pts · ${esc(g.liga.n)}</span><span class="${g.seq?'hot':''}">${icon.fire}<b>${g.seq}</b> ${g.seq===1?'semana':'semanas'}</span><span>${icon.fire.replace('class="ic"','class="ic kc"')}<b>${fmtN(g.semana.kcal)}</b> kcal</span></span></span>${icon.chev}</a>`;
 }
 
+// #region: telas-jornada
 /* ---------- Página "Minha jornada" (#pontos) ---------- */
 function vJornada(){
   const g=jogo(),nv=g.nivel,pf=g.pf,lg=g.liga;
@@ -297,9 +308,11 @@ function vRegras(g){
     ${ids.map(k=>{const p=PX[k],n=intensidade(p);return `<tr><td>${esc(LIB[k].nome)}</td><td><span class="intens" aria-label="${n} de 5">${'<i class="on"></i>'.repeat(n)}${'<i></i>'.repeat(5-n)}</span></td><td>${p.s?String(p.s).replace('.',',')+'/s':String(p.r).replace('.',',')}</td><td>${p.ref?String(p.ref).replace('.',',')+'× peso':'corpo'}</td></tr>`;}).join('')}
     </tbody></table></div></details>`;
 }
+// #region: intensidade-tag
 /* tag de intensidade (biblioteca e folha de adicionar) */
 function intensTag(id){const p=PX[id];if(!p)return '';const n=intensidade(p);return `<span class="intens" title="Intensidade ${n} de 5 · ${p.s?String(p.s).replace('.',',')+' pt por segundo':String(p.r).replace('.',',')+' pts por repetição'}" aria-label="Intensidade ${n} de 5">${gic.bolt}${'<i class="on"></i>'.repeat(n)}${'<i></i>'.repeat(5-n)}</span>`;}
 
+// #region: telas-resumo
 /* ---------- Resumo: pontos do treino ---------- */
 function vPontosResumo(s){
   const g=jogo(),r=g.porSessao[s.id];if(!r)return '';
@@ -318,6 +331,7 @@ function vPontosResumo(s){
     <a class="link" href="#pontos">Ver minha jornada</a></section>`;
   return h;
 }
+// #region: animacoes
 /* animações: contagem do número e confete (respeita "reduzir movimento") */
 const calmo=()=>window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
 function animaResumo(){
@@ -336,6 +350,7 @@ function voaPontos(n,extra){if(!n)return;const b=document.querySelector('#sbarPt
   const e=document.createElement('div');e.className='voa'+(extra?' rec':'');e.innerHTML=`${gic.bolt}+${n}${extra?` <small>${esc(extra)}</small>`:''}`;
   e.style.left=Math.max(70,Math.min(innerWidth-70,r.left+r.width/2))+'px';e.style.top=(b?r.top+r.height+70:r.top)+'px';document.body.appendChild(e);setTimeout(()=>e.remove(),1600);}
 
+// #region: perfil
 /* ---------- Perfil ---------- */
 function sheetPerfil(){
   const x=perfil();

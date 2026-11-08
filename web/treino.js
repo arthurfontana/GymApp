@@ -3,6 +3,7 @@
    Dados: capacidade `db` da página (sincroniza entre aparelhos). Sem ela, localStorage.
    ===================================================================================== */
 (function(){
+// #region: utilitarios
 const $=s=>document.querySelector(s);
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fmtKg=v=>{if(v==null||v==='')return '–';const n=Math.round(+v*100)/100;return String(n).replace('.',',');};
@@ -15,6 +16,7 @@ const DIAS=['domingo','segunda','terça','quarta','quinta','sexta','sábado'];
 const dataCurta=ms=>{const d=new Date(ms);return `${DIAS[d.getDay()]}, ${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}`;};
 function haQuanto(ms){const h=(Date.now()-ms)/36e5;if(h<1)return 'agora há pouco';if(h<24)return `há ${Math.round(h)} h`;const d=Math.round(h/24);return d===1?'ontem':`há ${d} dias`;}
 
+// #region: lib-catalogo
 /* ---------- Biblioteca (exercícios com demonstração 3D) ---------- */
 const LIB={
   'supino-inclinado':{nome:'Supino inclinado com halteres',grupo:'Peito',foco:'Peitoral superior e tríceps',passo:1,porHalter:true,principal:true,eq:['banco','halteres'],eqTxt:'Banco e halteres'},
@@ -46,12 +48,14 @@ const EQ={maquina:'Máquina',polia:'Polia',barra:'Barra',halteres:'Halteres',ban
 const EQ_ORD=Object.keys(EQ);
 window.__LIB_IDS=Object.keys(LIB);
 
+// #region: estado
 /* ---------- Estado ---------- */
 const S={mode:'loading',ready:false,conjuntos:{},treinos:{},sessoes:{},config:null,note:'',saveErr:false,readOnly:false};
 const ui={view:'home',conjuntoId:null,treinoId:null,resumoId:null,draft:{},histAll:false,stopwatch:null,lastHash:''};
 let db=null;
 const LS={get(k,d){try{const v=localStorage.getItem('mt3d.'+k);return v?JSON.parse(v):d;}catch(e){return d;}},set(k,v){try{localStorage.setItem('mt3d.'+k,JSON.stringify(v));}catch(e){}}};
 
+// #region: armazenamento
 /* ---------- Armazenamento ---------- */
 const wq={};
 function saveLocal(){if(S.mode!=='local')return;LS.set('conjuntos',S.conjuntos);LS.set('treinos',S.treinos);LS.set('sessoes',S.sessoes);LS.set('config',S.config);}
@@ -104,6 +108,7 @@ async function initStore(){
   db.doc('config/programa').onSnapshot(x=>{S.config=x.exists?clone(x.data()):null;if(!x.metadata.fromCache)got.c=true;check();},onErr);
 }
 
+// #region: migracao
 /* O primeiro programa (Full Body A/B) vira o conjunto "Treino na academia", uma única vez */
 let migrou=false;
 function migrar(){
@@ -119,6 +124,7 @@ function migrar(){
   if(cfg)put('config','programa',Object.assign(clone(cfg),{migrado:true}));
 }
 
+// #region: derivados
 /* ---------- Derivados ---------- */
 const treinosOrd=()=>Object.values(S.treinos).sort((a,b)=>(a.ordem||99)-(b.ordem||99)||String(a.nome).localeCompare(b.nome));
 const sessoesFeitas=()=>Object.values(S.sessoes).filter(s=>s.status==='concluida').sort((a,b)=>(b.fim||0)-(a.fim||0));
@@ -168,6 +174,7 @@ const faixa=it=>+it.min===+it.max?`${it.min}`:`${it.min}–${it.max}`;
 const rotFaixa=it=>it.tipo==='tempo'?`${faixa(it)} s`:`${faixa(it)} reps${LADO[it.lado]?' '+LADO[it.lado]:''}`;
 const rotSet=(it,x)=>it.tipo==='tempo'?`${x.reps} s`:(it.semCarga?`${x.reps}`:`${fmtKg(x.carga)}×${x.reps}`);
 
+// #region: progressao
 /* sugestão de progressão: aumentar repetições, depois a carga (orientação da ficha) */
 function sugestao(it,u){
   if(!u)return {cls:'novo',txt:it.tipo==='tempo'?`Primeira vez: segure ${faixa(it)} s com o corpo alinhado.`:it.semCarga?`Primeira vez: faça ${rotFaixa(it)} com calma, priorizando a técnica. Se a execução piorar, pare antes.`:`Primeira vez: escolha uma carga que deixe 2–3 repetições sobrando no fim de cada série.`};
@@ -202,6 +209,7 @@ function prefill(s,ii,si){
 
 /*@@PONTOS@@*/
 
+// #region: render
 /* ---------- Render ---------- */
 let rq=0,pendingRender=false,mini3d=false;
 function schedule(){if(rq)return;rq=requestAnimationFrame(()=>{rq=0;render();});}
@@ -221,6 +229,7 @@ function render(force){
 }
 document.addEventListener('focusout',()=>setTimeout(()=>{if(pendingRender)render();},0));
 
+// #region: tema
 /* ---------- Tema (padrão claro; escolha guardada neste aparelho) ---------- */
 const temaAtual=()=>document.documentElement.dataset.theme==='dark'?'dark':'light';
 function themeBtn(){const d=temaAtual()==='dark';return `<button class="themebtn" type="button" aria-label="${d?'Usar tema claro':'Usar tema escuro'}" title="${d?'Tema claro':'Tema escuro'}"><svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/></svg><svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg></button>`;}
@@ -228,6 +237,7 @@ function syncThemeBtns(){const d=temaAtual()==='dark';document.querySelectorAll(
 document.addEventListener('click',e=>{const b=e.target.closest&&e.target.closest('.themebtn');if(!b)return;
   const v=temaAtual()==='dark'?'light':'dark';document.documentElement.dataset.theme=v;try{localStorage.setItem('mt3d.theme',v);}catch(err){}syncThemeBtns();});
 document.querySelectorAll('[data-themebtn]').forEach(x=>{x.outerHTML=themeBtn();});
+// #region: biblioteca-menu
 /* biblioteca de exercícios (HTML fixo): tag de equipamento em cada card + filtro */
 function enfeitaBiblioteca(){
   const menuV=document.getElementById('menuView');if(!menuV)return;
@@ -241,6 +251,7 @@ function enfeitaBiblioteca(){
     if(emp)emp.hidden=n>0;});
 }
 
+// #region: icones
 const icon={
   play:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4v16l13-8z" fill="currentColor"/></svg>',
   chev:'<svg viewBox="0 0 24 24" aria-hidden="true" class="ic"><path d="M9 5l7 7-7 7"/></svg>',
@@ -258,6 +269,7 @@ const icon={
   fire:'<svg viewBox="0 0 24 24" aria-hidden="true" class="ic"><path d="M12 3c1 3.5 5 5.5 5 10a5 5 0 0 1-10 0c0-2.2 1-3.8 2.3-5 .2 1.6 1 2.6 2.2 3 0-3 .5-5.6.5-8z"/></svg>',
   walk:'<svg viewBox="0 0 24 24" aria-hidden="true" class="ic"><circle cx="13" cy="4.5" r="1.8"/><path d="M10.5 21l2-6-2.5-2.5 1-5 3.5 2.5 2.5 1M10 12.5l-2 1.5-1.5 3M12.5 15l2.5 2 1 4"/></svg>',
 };
+// #region: componentes-home
 /* aquecimento: lista simples (treino) */
 const AQ_PADRAO=[{t:'Marcha no lugar',s:30},{t:'Rotação dos ombros',s:30},{t:'Mobilidade do quadril',s:30},{t:'Agachamentos leves',s:30}];
 function vAquecLista(t){
@@ -286,6 +298,7 @@ function histRow(s,comConj){const v=volumeSessao(s);const dur=(s.fim-s.inicio)/1
 const footNote=()=>`<p class="small foot">${S.mode==='db'?'Seus treinos e séries ficam salvos nesta página e aparecem em qualquer aparelho em que você abrir.':S.mode==='local'?'Os dados estão sendo salvos só neste aparelho e navegador.':''}</p>`;
 const libCard=()=>`<a class="card lib" href="#biblioteca">${icon.cube}<span class="tr-b"><span class="tr-n">Biblioteca</span><span class="tr-m">${Object.keys(LIB).length} exercícios 3D e ${Object.keys(S.treinos).length} treinos, compartilhados por todos os conjuntos</span></span>${icon.chev}</a>`;
 
+// #region: v-inicio
 /* ---------- Início: lista de conjuntos ---------- */
 function vInicio(){
   const cs=conjuntosOrd(), act=sessaoAtiva(), feitas=sessoesFeitas(), ro=S.readOnly;
@@ -312,6 +325,7 @@ function vInicio(){
   return h+footNote();
 }
 
+// #region: v-conjunto
 /* ---------- Conjunto ---------- */
 function vConjunto(){
   const c=S.conjuntos[ui.conjuntoId];
@@ -362,6 +376,7 @@ function vConjunto(){
   return h+libCard()+footNote();
 }
 
+// #region: ficha-semana
 /* programa com semanas: fase atual, meta de caminhada e ficha da semana (marcações guardadas no conjunto) */
 const segundaDe=ms=>{const d=new Date(ms);const dow=(d.getDay()+6)%7;return new Date(d.getFullYear(),d.getMonth(),d.getDate()-dow).getTime();};
 function semanaPrograma(c){
@@ -385,6 +400,7 @@ function vFicha(c,sp,ts,sem){
   return h+`</div>`;
 }
 
+// #region: v-bib
 /* ---------- Biblioteca de treinos (aba "Treinos") ---------- */
 function vBib(){
   const ts=treinosLib(), ro=S.readOnly;
@@ -401,6 +417,7 @@ function vBib(){
   return h+footNote();
 }
 
+// #region: v-treino
 function vTreino(){
   const t=S.treinos[ui.treinoId], c=ui.conjuntoId?S.conjuntos[ui.conjuntoId]:null;
   const back=c?`<a class="back" href="#conjunto/${enc(c.id)}">${icon.back}${esc(c.nome)}</a>`:`<a class="back" href="#biblioteca/treinos">${icon.back}Treinos</a>`;
@@ -435,6 +452,7 @@ function vTreino(){
   return h;
 }
 
+// #region: sessao-viva
 /* ---------- Sessão ao vivo ---------- */
 function exAtual(s){return Math.min(Math.max(0,s.atual||0),s.itens.length-1);}
 function proxPendente(s,from){const n=s.itens.length;for(let k=0;k<n;k++){const i=(from+k)%n;const it=s.itens[i];if(it.sets.length<it.series)return i;}return -1;}
@@ -450,6 +468,7 @@ const RFIM={serie:'Próxima série!',troca:'Próximo exercício!',rodada:'Próxi
 function aqPasso(s){const tot=s.descansoTotal||aqSeg(s);const el=tot-(s.descansoFim-Date.now())/1000;let c=0;
   for(let i=0;i<s.aquecimento.length;i++){c+=+s.aquecimento[i].s||0;if(el<c)return {i,falta:c-el};}return {i:s.aquecimento.length-1,falta:0};}
 const aqNextTxt=(s,a)=>{const x=s.aquecimento[a.i],nx=s.aquecimento[a.i+1];return `Agora: <b>${esc(x.t)}</b> · ${mmss(a.falta)}${nx?`<br><span class="small">Depois: ${esc(nx.t)}</span>`:'<br><span class="small">Último movimento</span>'}`;};
+// #region: v-sessao
 function vSessao(){
   const s=sessaoAtiva();
   if(!s)return `<a class="back" href="#">${icon.back}Meus treinos</a>${S.ready?'<p class="empty">Nenhum treino em andamento.</p>':'<p class="note">Carregando…</p>'}`;
@@ -522,6 +541,7 @@ function vSessao(){
   if(!todoFeito)h+=vComoFazer(it);
   return h;
 }
+// #region: v-como-fazer
 function vComoFazer(it){
   const tem=it.exId&&LIB[it.exId];
   if(!tem)return `<section class="card howto none"><span class="eyebrow">Como fazer</span><p class="small">Este exercício ainda não tem animação 3D. Use a observação da ficha e confirme a execução com o professor.</p></section>`;
@@ -538,6 +558,7 @@ function stepper(f,label,val){
   return `<div class="stp"><span class="stp-l">${label}</span><div class="stp-r"><button data-act="step" data-f="${f}" data-d="-1" aria-label="Diminuir">−</button><input data-f="${f}" inputmode="decimal" value="${esc(val)}" aria-label="${esc(label)}"><button data-act="step" data-f="${f}" data-d="1" aria-label="Aumentar">+</button></div></div>`;
 }
 
+// #region: v-resumo
 /* ---------- Resumo ---------- */
 function vResumo(){
   const s=S.sessoes[ui.resumoId];
@@ -565,6 +586,7 @@ function vResumo(){
   return h;
 }
 
+// #region: pilula
 /* ---------- Pílula ao vivo (fora da tela da sessão) ---------- */
 function livePill(){
   const pill=$('#livePill'), s=sessaoAtiva();
@@ -575,6 +597,7 @@ function livePill(){
   pill.classList.toggle('resting',!!r);
 }
 
+// #region: relogio
 /* ---------- Relógio: descanso, tempo de treino, cronômetro ---------- */
 let audio=null, alerted=0, wake=null;
 function beep(freq,dur,when=0){try{if(!audio)return;const o=audio.createOscillator(),g=audio.createGain();o.frequency.value=freq;o.type='sine';g.gain.setValueAtTime(.0001,audio.currentTime+when);g.gain.exponentialRampToValueAtTime(.35,audio.currentTime+when+.02);g.gain.exponentialRampToValueAtTime(.0001,audio.currentTime+when+dur);o.connect(g).connect(audio.destination);o.start(audio.currentTime+when);o.stop(audio.currentTime+when+dur+.05);}catch(e){}}
@@ -611,6 +634,7 @@ async function keepAwake(on){
 }
 document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){if(sessaoAtiva())keepAwake(true);tick(true);schedule();}});
 
+// #region: folhas
 /* ---------- Bottom sheet ---------- */
 let sheetHandler=null;
 function openSheet(html,handler){const w=$('#sheetWrap');$('#sheet').innerHTML=html;sheetHandler=handler;w.hidden=false;requestAnimationFrame(()=>w.classList.add('open'));const f=$('#sheet [autofocus]');if(f)setTimeout(()=>f.focus(),60);}
@@ -623,6 +647,7 @@ function confirmSheet(title,text,okLabel,onOk,danger){
   openSheet(`<h3>${esc(title)}</h3><p class="small">${esc(text)}</p><div class="sheet-btns"><button class="btn ghost" data-act="close">Cancelar</button><button class="btn ${danger?'danger':'primary'}" data-act="ok">${esc(okLabel)}</button></div>`,act=>{if(act==='ok'){closeSheet();onOk();}});
 }
 
+// #region: folhas-edicao
 /* ---------- Edição de treino ---------- */
 function itemPadrao(exId,nome,t){
   const L=exId?LIB[exId]:null;
@@ -770,6 +795,7 @@ function sheetAddTreino(c){
   });
 }
 
+// #region: acoes-sessao
 /* ---------- Ações da sessão ---------- */
 function iniciar(tid,cid){
   const t=S.treinos[tid];if(!t)return;const c=cid&&S.conjuntos[cid]?S.conjuntos[cid]:null;
@@ -815,6 +841,7 @@ function concluirSerie(){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
+// #region: eventos
 /* ---------- Eventos ---------- */
 document.addEventListener('click',e=>{
   const b=e.target.closest('#appView [data-act]');if(!b)return;
@@ -884,6 +911,7 @@ function sheetSet(s,ii,k){
   });
 }
 
+// #region: roteador
 /* ---------- Navegação (#hash; o voltar do celular funciona) ---------- */
 const app=$('#appView'), menu=$('#menuView'), exv=$('#exView');
 const VIEWS={home:'#homeView',conjunto:'#conjuntoView',bib:'#bibView',treino:'#treinoView',sessao:'#sessaoView',resumo:'#resumoView',pontos:'#pontosView'};
