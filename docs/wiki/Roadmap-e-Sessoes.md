@@ -8,7 +8,7 @@
 |---|---|---|---|---|---|
 | 00 | [Análise e plano](S00-analise-e-plano) | — | Esta documentação | — | ✅ |
 | 01 | [Guardrails de contexto](S01-guardrails-de-contexto) | Sonnet 5.5 | `CLAUDE.md` ≤ 450 linhas com mapa "onde vive o quê"; guard no CI; âncoras; nada perdido | 00 | ✅ [PR #2](https://github.com/arthurfontana/GymApp/pull/2) |
-| 02 | [Build com Vite e testes com assert](S02-build-vite-e-testes) | Opus 5.5 | `npm run dev` abre o app idêntico; e2e falham sozinhos em erro; Artifact ainda publicável | 01 | ✅ |
+| 02 | [Build com Vite e testes com assert](S02-build-vite-e-testes) | Opus 5.5 | `npm run dev` abre o app idêntico; e2e falham sozinhos em erro; Artifact ainda publicável | 01 | ✅ [PR #3](https://github.com/arthurfontana/GymApp/pull/3) |
 | 03 | [Vercel, PWA e CI](S03-vercel-pwa-ci) | Sonnet 5.5 | App atual no ar em `*.vercel.app`, instalável no celular; CI verde em todo PR; 3D sob demanda | 02 | ⬜ |
 | 04 | [Supabase: schema, RLS e testes](S04-supabase-schema-rls) | Opus 5.5 | Migrations aplicadas no dev; pgTAP prova "cada um vê só o seu"; deploy de migrations em prod com aprovação | 03 | ⬜ |
 | 05 | [Login por convite e perfil](S05-login-convite-perfil) | Sonnet 5.5 | Arthur (admin) entra; pessoa convidada cria login pelo link; perfil salvo na nuvem | 04 | ⬜ |
