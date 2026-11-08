@@ -200,6 +200,7 @@ Encosto 35° do chão, assento 25°, quadril em (0, .52, 0), trilho d=(cos45, si
 - Restrições dos briefings: sem hiperextensão, sem travar articulações, sem objetos flutuando, sem arco exagerado, sem contração muscular exagerada.
 
 ## 6. Pendências / próximos passos
+- **Evolução para app web multiusuário (Vercel + Supabase, login por convite, ranking):** spec, decisões e prompts das sessões S01–S18 com o modelo de cada uma em `docs/wiki/` (comece por `docs/wiki/Roadmap-e-Sessoes.md`).
 - Arthur vai mandar os próximos briefings, um por exercício; adicionar cada um ao menu (e ao `LIB` em `treino.js`, para aparecer em "Adicionar exercício").
 - Ideias oferecidas: indicadores corporais do PDF (peso, cintura, fotos) e gráfico de evolução de carga por exercício.
 - Pergunta sem resposta: o briefing da puxada alta veio duplicado — engano ou quer a barra parando mais alto (cotovelos 70–100°)?
