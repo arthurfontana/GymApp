@@ -9,3 +9,4 @@ tests/visual/out/
 *.png
 !docs/*.png
 .DS_Store
+!public/icons/*.png

@@ -18,6 +18,8 @@ export default defineConfig({
     viewport: { width: 390, height: 844 },
     deviceScaleFactor: 1,
     trace: 'off',
+    // o service worker (PWA) fica fora dos specs: o spec pwa liga de propósito
+    serviceWorkers: 'block',
     launchOptions: {
       // WebGL por software (sem GPU no contêiner/CI)
       args: ['--use-gl=angle', '--use-angle=swiftshader', '--enable-unsafe-swiftshader'],

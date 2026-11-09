@@ -490,3 +490,11 @@
 @keyframes voa{0%{opacity:0;transform:translate(-50%,8px) scale(.9)}15%{opacity:1;transform:translate(-50%,-6px) scale(1.05)}70%{opacity:1}100%{opacity:0;transform:translate(-50%,-70px) scale(1)}}
 :root[data-theme="dark"] .voa{color:#0b1220}
 @media (prefers-reduced-motion:reduce){.voa{animation-duration:1.2s}.xpbar i{transition:none}}
+
+/* aviso "Nova versão disponível" (PWA, S03): toast fixo com botão */
+.toast.upd{display:flex;align-items:center;gap:14px;white-space:nowrap;z-index:70}
+.toast.upd .link{background:none;border:0;font:inherit;cursor:pointer;color:inherit;font-weight:600;text-decoration:underline;padding:6px 2px;min-height:32px}
+/* indicador de carregamento do 3D */
+@keyframes pulso3d{50%{opacity:.45}}
+.loading:not([hidden]),.mini-load:not([hidden]){animation:pulso3d 1.4s ease-in-out infinite}
+@media (prefers-reduced-motion: reduce){.loading,.mini-load{animation:none!important}}

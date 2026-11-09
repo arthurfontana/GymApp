@@ -167,6 +167,20 @@ As páginas de funcionalidade dizem **como o sistema é**. Esta página diz **po
 
 ---
 
+## ADR-016: Vercel, PWA e 3D sob demanda
+
+**Decisão (S03):** o app (modo local, sem login) está em https://gym-app-pied-five.vercel.app/ — preview por PR e produção em `main` pela integração Git da Vercel (`vercel.json`: `npm run build` → `dist`); o CI do GitHub só verifica, não faz deploy.
+
+- **3D sob demanda.** `src/main.js` carrega a jornada; o `three` e o `app3d.js` ficam no chunk `tres-d-*.js`, baixado por `import()` em `src/3d/carregar.js` quando a rota é `#biblioteca`, `#<exercício>` ou a sessão pede a prévia. `carregar.js` publica `__mini`/`__enterExercise` provisórias que repassam o último pedido depois do download (`__mini(null)` sem 3D carregado é no-op). `__EX_IDS` agora vem de `LIB`; o teste `tests/unit/lib-exs.test.js` garante `LIB == EXS` (e o menu do `index.html`). No Artifact (sem divisão de código) o 3D vem embutido, como antes.
+- **PWA** com `vite-plugin-pwa` (`registerType: 'prompt'`): o shell vai para o precache; o chunk do 3D e o modelo, só em tempo de execução (`CacheFirst`); fontes em `StaleWhileRevalidate`; `/api/*` nunca em cache. Atualização com aviso "Nova versão disponível — Atualizar" (o usuário escolhe, para não recarregar no meio de uma sessão). Ícones PNG gerados de SVG por `scripts/gerar-icones.mjs` e **commitados** (exceção `public/icons/*.png` no `.gitignore`). `workbox-build` e `workbox-window` entram como dependências de dev por serem peers do plugin.
+- **CSP** sem `'unsafe-inline'` em scripts (hash dos dois scripts inline) — detalhes e justificativas (incl. `connect-src blob:` e `style-src 'unsafe-inline'`) em [Arquitetura §6](Arquitetura). O `vite preview` aplica os cabeçalhos do `vercel.json`, então os e2e rodam sob a CSP real.
+- **Aviso "Versão de teste — seus dados ficam só neste aparelho"** na tela Início quando o app usa o modo local fora do Artifact; some na S05/S06, quando houver login e dados na nuvem.
+- **e2e:** `abrir()` agora espera `__APP__` (jornada pronta) e, por padrão, carrega o 3D (`__READY__`); `{ sem3d: true }` abre só a jornada. O service worker fica bloqueado nos specs (`serviceWorkers: 'block'`), salvo em `pwa.spec.js`.
+
+**Trade-off aceito:** a primeira abertura de uma sessão ou da biblioteca baixa o 3D (≈ 4,5 MB) na hora — com indicador "Carregando 3D…" —, em troca de um Início leve; depois fica em cache. O preview da Vercel não pôde ser conferido pela sessão (sem acesso ao projeto): o Arthur confere pelo link do PR.
+
+---
+
 ## Decisões do protótipo (ADR-000a a ADR-000g)
 
 Registradas na S01 a partir do histórico do `CLAUDE.md`. São anteriores ao plano de evolução; formato curto.

@@ -9,7 +9,7 @@
 | 00 | [Análise e plano](S00-analise-e-plano) | — | Esta documentação | — | ✅ |
 | 01 | [Guardrails de contexto](S01-guardrails-de-contexto) | Sonnet 5.5 | `CLAUDE.md` ≤ 450 linhas com mapa "onde vive o quê"; guard no CI; âncoras; nada perdido | 00 | ✅ [PR #2](https://github.com/arthurfontana/GymApp/pull/2) |
 | 02 | [Build com Vite e testes com assert](S02-build-vite-e-testes) | Opus 5.5 | `npm run dev` abre o app idêntico; e2e falham sozinhos em erro; Artifact ainda publicável | 01 | ✅ [PR #3](https://github.com/arthurfontana/GymApp/pull/3) |
-| 03 | [Vercel, PWA e CI](S03-vercel-pwa-ci) | Sonnet 5.5 | App atual no ar em `*.vercel.app`, instalável no celular; CI verde em todo PR; 3D sob demanda | 02 | ⬜ |
+| 03 | [Vercel, PWA e CI](S03-vercel-pwa-ci) | Sonnet 5.5 | App atual no ar em `*.vercel.app`, instalável no celular; CI verde em todo PR; 3D sob demanda | 02 | ✅ (PR da S03 no GitHub) |
 | 04 | [Supabase: schema, RLS e testes](S04-supabase-schema-rls) | Opus 5.5 | Migrations aplicadas no dev; pgTAP prova "cada um vê só o seu"; deploy de migrations em prod com aprovação | 03 | ⬜ |
 | 05 | [Login por convite e perfil](S05-login-convite-perfil) | Sonnet 5.5 | Arthur (admin) entra; pessoa convidada cria login pelo link; perfil salvo na nuvem | 04 | ⬜ |
 | 06 | [Dados na nuvem e fila offline](S06-dados-nuvem-offline) | Opus 5.5 | Treinos e sessões de cada um na nuvem; sessão inteira sem internet sem perder série | 05 | ⬜ |
@@ -87,7 +87,7 @@ Mapeamento dos tiers da skill `especificacao-e-sessoes` para a família vigente 
 | # | Pergunta | Recomendação | Afeta |
 |---|---|---|---|
 | P1 | Login por **link de convite + e-mail e senha** (sem e-mail automático) está bom? Alternativa: código por e-mail (exige configurar um SMTP, ex.: Gmail com senha de app) | Convite + senha (ADR-005) | S05 |
-| P2 | Nome e endereço do app na Vercel (ex.: `meutreino3d.vercel.app`)? Domínio próprio? | Começar com `*.vercel.app` | S03 |
+| ~~P2~~ | ~~Nome e endereço do app na Vercel?~~ **Respondida:** https://gym-app-pied-five.vercel.app/ (domínio próprio fica para depois) | — | S03 ✅ |
 | P3 | A biblioteca 3D deve abrir **sem login** (para mostrar exercícios a quem não tem convite)? | Não, por enquanto (ADR-014) | S05 |
 | P4 | As 4 sessões de 07/11/2026 (uma de 1 minuto) eram testes? Ficam no histórico e nos pontos? | Perguntar na S08 | S08, S11 |
 | P5 | Quantas pessoas no início? (dimensiona o teste de carga da S16) | Até 20 | S16 |
@@ -99,5 +99,5 @@ Pendências e ideias que existiam antes do plano. Não são sessões; entram qua
 
 - **Novos briefings de exercício**: o Arthur manda um por vez; cada um é um exercício novo (skill `animacao-3d-exercicio`: menu, `LIB`, `PX`).
 - **Indicadores corporais do PDF** (peso, cintura, fotos) e **gráfico de evolução de carga por exercício** (este último é a S17).
-- **Melhorias 3D possíveis**: roupa esportiva/pele translúcida na vista anatômica (pedido nos briefings, não feito); a deformação de ombro e virilha em flexões grandes é aproximada; o primeiro carregamento tem ≈ 4 MB (a S03 trata do carregamento sob demanda).
+- **Melhorias 3D possíveis**: roupa esportiva/pele translúcida na vista anatômica (pedido nos briefings, não feito); a deformação de ombro e virilha em flexões grandes é aproximada; o 3D (≈ 4,5 MB com o modelo) agora só baixa ao abrir a biblioteca ou uma sessão (S03).
 - **Pergunta aberta da puxada alta**: ver P6 acima.
