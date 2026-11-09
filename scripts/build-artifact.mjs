@@ -26,6 +26,9 @@ html = html.replace(scripts[0][0], '').replace(estilos[0][0], () => `<style>\n${
 // o bundle é IIFE (script clássico): precisa do DOM pronto, então vai no fim do <body>
 html = html.replace('</body>', () => `<script>\n${js}\n</script>\n</body>`);
 
+// ícones do PWA (S03): o host do Artifact só serve a página e o modelo; sem service worker não há instalação
+html = html.replace(/<link rel="(?:icon|apple-touch-icon)"[^>]*>\n?/g, '');
+
 const resto = html.match(/<script[^>]+src=|<link[^>]+href="(?!https:\/\/fonts\.)/g);
 if (resto) throw new Error('ainda há arquivo externo no HTML do Artifact: ' + resto.join(', '));
 if (/import\.meta|\bimport\s*\(/.test(js)) throw new Error('o bundle do Artifact ainda tem import/import.meta');

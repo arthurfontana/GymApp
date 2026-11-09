@@ -9,7 +9,7 @@ for(const [hash,scheme] of [['#biblioteca','light'],['#afundo-tras','dark'],['#b
  const p=await b.newPage({viewport:{width:390,height:844},colorScheme:scheme});await p.route(/fonts\.(googleapis|gstatic)\.com/,r=>r.fulfill({status:200,contentType:'text/css',body:''}));
  const errs=[];p.on('pageerror',e=>errs.push(e.message));await p.addInitScript(th=>localStorage.setItem('mt3d.theme',th),scheme);
  await p.goto(BASE+'?test=1'+hash);
- if(hash&&hash!=='#biblioteca'){await p.waitForFunction(()=>window.__READY__,null,{timeout:90000});await p.evaluate(()=>window.__go(1,'lateral'));}
+ if(hash&&hash!=='#biblioteca'){await p.waitForFunction(()=>window.__APP__);await p.evaluate(()=>window.__carregar3D());await p.waitForFunction(()=>window.__READY__,null,{timeout:90000});await p.evaluate(()=>window.__go(1,'lateral'));}
  await p.waitForTimeout(400);
  const name='mob'+(hash.replace('#','_')||'_menu');
  await p.screenshot({path:OUT+name+'.png',fullPage:true});

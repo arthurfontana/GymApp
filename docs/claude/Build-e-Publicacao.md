@@ -1,6 +1,6 @@
 # Build e publicação
 
-Como o app é montado (Vite, desde a S02), testado e publicado no Artifact (até a S09, ADR-011). A S03 acrescenta Vercel, PWA e CI completo.
+Como o app é montado (Vite, desde a S02), testado e publicado no Artifact (até a S09, ADR-011). A S03 acrescentou Vercel, PWA, CI completo e o 3D sob demanda.
 
 ## Estrutura do repositório
 
@@ -9,7 +9,10 @@ CLAUDE.md             índice enxuto, carregado em toda sessão
 index.html            casca HTML completa: doctype, viewport, fontes, script do tema (antes do conteúdo),
                       script do modo de teste (?test=1), menu da biblioteca (#menuView), palco 3D (#exView/#stage),
                       telas da jornada (#appView), folhas, pílula e toast
-src/main.js           entrada: importa, nesta ordem, CSS → three-setup → 3d/app3d.js → jornada/treino.js
+src/main.js           entrada: CSS → 3d/carregar.js (pontes provisórias) → jornada/treino.js → pwa.js
+src/3d/carregar.js    import() sob demanda do 3D; __mini/__enterExercise provisórias; __carregar3D
+src/3d/tres-d.js      pacote do 3D (chunk tres-d-*.js): three-setup.js + app3d.js
+src/pwa.js            registro do service worker + aviso "Nova versão disponível" (stub no Artifact)
 src/three-setup.js    window.THREE = cópia do three r128 (npm) + OrbitControls + GLTFLoader (examples/jsm)
 src/3d/app3d.js       biblioteca 3D: rig, exercícios, câmera (ex-web/app.js; não reescrever)
 src/jornada/treino.js jornada: store db/localStorage, telas, sessão, roteador (IIFE)
@@ -17,7 +20,9 @@ src/jornada/pontos.js pontuação; o plugin do vite.config.js cola no lugar de /
 src/styles/app.css    estilos da casca e da biblioteca 3D (ex-<style> do index.html)
 src/styles/treino.css estilos da jornada
 public/modelos/body-model-v1.glb   modelo GLB (servido em /modelos/; no Artifact vira body-model.wasm)
-vite.config.js        plugin gymapp-pontos, modo artifact, config do vitest
+public/icons/         icone.svg, icone-maskable.svg e os PNG do PWA (scripts/gerar-icones.mjs)
+vercel.json           build, cache e cabeçalhos de segurança/CSP (Arquitetura §6)
+vite.config.js        plugin gymapp-pontos, vite-plugin-pwa, modo artifact, config do vitest
 playwright.config.js  e2e: preview na porta 4173, 390×844, projetos claro e escuro
 scripts/              check-claude-md.mjs (guard do CLAUDE.md) e build-artifact.mjs (arquivo único)
 tests/e2e/            specs com assert: smoke, exercicios, jornada, calistenia, gamificacao (+ fixtures.js)
@@ -29,7 +34,7 @@ third_party/          atlas anatômico (CC BY-SA 4.0): manter ATTRIBUTION e LICE
 data/                 cópia (snapshot manual) dos dados do Arthur; ver data/README.md
 docs/wiki/            documentação normativa (sincroniza com a Wiki do GitHub)
 docs/claude/          detalhe de implementação para a IA (este diretório)
-.github/workflows/    ci.yml (job guardrails) e sync-wiki.yml
+.github/workflows/    ci.yml (jobs guardrails e verificar) e sync-wiki.yml
 .claude/skills/       skill de projeto animacao-3d-exercicio
 ```
 
@@ -39,9 +44,17 @@ Saídas (fora do git; nunca ler nem editar): `dist/` (build web), `dist-artifact
 
 - **Editar** `src/` (ou o menu em `index.html`) → `npm run dev` (http://localhost:5173, recarrega sozinho; mudança em `pontos.js` recarrega o `treino.js`) → `npm run check` e `npm run test:e2e` → commit → publicar.
 - **Comandos** (da raiz): `npm run dev` · `npm run build` (gera `dist/`: `index.html`, `assets/*` com hash, `modelos/body-model-v1.glb`) · `npm run preview` (serve `dist/` na porta 4173) · `npm run check` (`check:claude-md` + `test` (vitest) + `build`) · `npm run test:e2e` (build + Playwright) · `npm run build:artifact`.
-- **Mesma semântica da concatenação antiga:** o plugin `gymapp-pontos` (hook `transform`) cola `pontos.js` dentro do IIFE do `treino.js`, como o `build.py` fazia; `app3d.js` e `treino.js` continuam IIFEs que só conversam por `window.__EX_IDS`, `__mini`, `__enterExercise` e os ganchos `window.__*`. Os módulos rodam em modo estrito (conferido: sem globais implícitas nem funções em bloco). O 3D ainda carrega junto com a jornada; sob demanda é a S03.
+- **Mesma semântica da concatenação antiga:** o plugin `gymapp-pontos` (hook `transform`) cola `pontos.js` dentro do IIFE do `treino.js`, como o `build.py` fazia; `app3d.js` e `treino.js` continuam IIFEs que só conversam por `window.__EX_IDS`, `__mini`, `__enterExercise` e os ganchos `window.__*`. Os módulos rodam em modo estrito (conferido: sem globais implícitas nem funções em bloco). O 3D carrega sob demanda (S03): a jornada abre primeiro e `carregar.js` baixa o chunk `tres-d-*.js` quando a rota é `#biblioteca`, `#<exercício>` ou a sessão pede a prévia.
 - **Modo de teste:** `?test=1` na URL define `window.__TEST__` (script inline no `index.html`, antes do módulo). Liga os ganchos (`__READY__`, `__go`, `__S`, `__put`…; ver [Motor-3D](Motor-3D.md)). Sem `?test=1`, nada disso existe.
 - **Mudanças no `app3d.js` desde o `web/app.js`:** só a URL do modelo (`import.meta.env.BASE_URL + 'modelos/body-model-v1.glb'`; no modo `artifact`, `'body-model.wasm'`). Nada mais foi preciso para rodar como módulo.
+
+## Deploy na Vercel (S03)
+
+- **Produção:** https://gym-app-pied-five.vercel.app/ — a cada push em `main`, a integração Git da Vercel roda `npm run build` e publica `dist/` (config em `vercel.json`). **Preview:** cada PR ganha um link próprio (comentário do bot da Vercel no PR); é por ele que o Arthur confere no celular antes do merge. O GitHub Actions **não** faz deploy.
+- **Cabeçalhos e CSP** vêm do `vercel.json` (texto final em [Arquitetura §6](../wiki/Arquitetura.md)). O `vite preview` aplica os mesmos cabeçalhos de segurança, então `npm run test:e2e` já roda sob a CSP; erro de CSP aparece como `console.error` e reprova o teste. Mexeu num script inline do `index.html`? Atualize o hash na CSP (`tests/unit/vercel-json.test.js` avisa).
+- **PWA:** `vite-plugin-pwa` gera `sw.js`, `workbox-*.js` e `manifest.webmanifest` no `build`. Ícones: edite `public/icons/*.svg` e rode `node scripts/gerar-icones.mjs` (commitar os PNG). Versão nova no ar → aviso "Nova versão disponível — Atualizar" no app aberto.
+- **Instalar no celular:** Chrome Android → menu ⋮ → "Instalar app"; iPhone → Safari → Compartilhar → "Adicionar à Tela de Início".
+- **Artifact:** `npm run build:artifact` desliga o PWA (alias para `src/pwa-stub.js`) e embute o 3D no bundle (`(sem divisão de código)`); nada muda no fluxo abaixo.
 
 ## Publicar no Artifact (até a S09)
 
@@ -58,10 +71,11 @@ Saídas (fora do git; nunca ler nem editar): `dist/` (build web), `dist-artifact
 
 ## Testes
 
-- **Guard do CLAUDE.md:** `npm run check:claude-md` (teto de 450 linhas, ou `CLAUDE_MD_MAX_LINES`); roda no CI (`ci.yml`, job `guardrails`).
-- **Unitários (`npm run test`, vitest):** `tests/unit/*.test.js`. Hoje só o plugin de pontos; os de verdade vêm na S06/S10.
-- **E2E com assert (`npm run test:e2e`):** `@playwright/test` (versão fixa igual à do Chromium do ambiente) contra `npm run preview` (porta 4173), Chromium com WebGL por software, viewport 390×844, projetos `claro` e `escuro`, `--trace off`. A base `tests/e2e/fixtures.js` responde vazio às fontes do Google, aplica o tema do projeto, coleta `pageerror` e `console.error` e **reprova o teste se houver qualquer erro**; helpers `semear` (localStorage), `abrir` (`?test=1` + `__READY__`), `semRolagemLateral` (scrollWidth ≤ 390), `anexarPrint` (prints viram anexos do relatório; sem comparação de pixel), `canvasTemImagem`.
-  - `smoke`: Início abre, `__READY__`, tema certo, pontes `__EX_IDS`/`__mini`/`__enterExercise`/`__go`/`__S`; biblioteca com 22 cartões; sem `?test=1` não há ganchos.
+- **Guard do CLAUDE.md:** `npm run check:claude-md` (teto de 450 linhas, ou `CLAUDE_MD_MAX_LINES`); roda no CI (`ci.yml`, job `guardrails`). O job `verificar` roda `npm run check` + `npm run test:e2e` e anexa prints se falhar.
+- **Unitários (`npm run test`, vitest):** `tests/unit/*.test.js`: plugin de pontos, `lib-exs` (LIB == EXS == menu) e `vercel-json` (cache, segurança, hash da CSP). Os de pontuação vêm na S06/S10.
+- **E2E com assert (`npm run test:e2e`):** `@playwright/test` (versão fixa igual à do Chromium do ambiente) contra `npm run preview` (porta 4173), Chromium com WebGL por software, viewport 390×844, projetos `claro` e `escuro`, `--trace off`. A base `tests/e2e/fixtures.js` responde vazio às fontes do Google, aplica o tema do projeto, coleta `pageerror` e `console.error` e **reprova o teste se houver qualquer erro**; helpers `semear` (localStorage), `abrir` (`?test=1`, espera `__APP__` e, salvo `{ sem3d: true }`, carrega o 3D e espera `__READY__`), `semRolagemLateral` (scrollWidth ≤ 390), `anexarPrint` (prints viram anexos do relatório; sem comparação de pixel), `canvasTemImagem`.
+  - `carregamento` (S03): Início não baixa `tres-d`, `three` (global) nem `body-model`; `#biblioteca`, `#<exercício>` e a prévia da sessão baixam. `pwa` (S03): manifest, ícones, metas do iOS e service worker (único spec com `serviceWorkers: 'allow'`).
+  - `smoke`: Início abre, `__APP__`/`__READY__`, tema certo, pontes `__EX_IDS`/`__mini`/`__enterExercise`/`__go`/`__S`; biblioteca com 22 cartões; sem `?test=1` não há ganchos.
   - `exercicios`: cada id de `__EX_IDS` (9 frames) renderiza o 1º e o 5º frame em lateral e frontal (mesa flexora: posterior) com imagem no canvas; a prévia `__mini` desenha para todos.
   - `jornada` (ex-`jor`): migração, conjunto, treino, folhas, tema, sessão com prévia 3D → palco → volta, todas as séries, resumo, conjunto novo com treino compartilhado, treino sem equipamento, bibliotecas.
   - `calistenia` (ex-`cal`): ficha da semana, aquecimento guiado, ordem exata do circuito de 2 rodadas, resumo, ficha depois, próximo treino.

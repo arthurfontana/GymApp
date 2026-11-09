@@ -1,9 +1,8 @@
-// Entrada do app. A ordem dos imports é a mesma da antiga concatenação do build.py:
-// CSS da casca + jornada, depois window.THREE, depois o 3D (que publica window.__EX_IDS,
-// __mini e __enterExercise) e por fim a jornada (que usa essas pontes).
-// O carregamento do 3D sob demanda é da S03.
+// Entrada do app. A jornada carrega primeiro; o 3D (three + app3d + modelo) só por import()
+// sob demanda, via src/3d/carregar.js (S03). carregar.js precisa vir antes da jornada: ele
+// publica as pontes provisórias window.__mini e window.__enterExercise que a jornada usa.
 import './styles/app.css';
 import './styles/treino.css';
-import './three-setup.js';
-import './3d/app3d.js';
+import './3d/carregar.js';
 import './jornada/treino.js';
+import './pwa.js';

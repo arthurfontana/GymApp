@@ -8,7 +8,7 @@ const b=await chromium.launch({executablePath:process.env.CHROME||undefined,args
 const p=await b.newPage({viewport:{width:900,height:700}});await p.route(/fonts\.(googleapis|gstatic)\.com/,r=>r.fulfill({status:200,contentType:'text/css',body:''}));
 const errs=[];p.on('pageerror',e=>errs.push(e.message));p.on('console',m=>{if(m.type()==='error')errs.push(m.text())});
 await p.goto(BASE+'?test=1#'+(process.argv[3]||'supino-maquina'));
-await p.waitForFunction(()=>window.__READY__,null,{timeout:90000});
+await p.waitForFunction(()=>window.__APP__);await p.evaluate(()=>window.__carregar3D());await p.waitForFunction(()=>window.__READY__,null,{timeout:90000});
 const shots=JSON.parse(process.argv[2]);
 for(const s of shots){
   await p.evaluate(s=>{if(s.parts!==undefined)window.__parts(s.parts);window.__go(s.t,s.v,s.cp,s.ct,s.err);},s);

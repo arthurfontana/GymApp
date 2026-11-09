@@ -2,7 +2,7 @@
 
 Idioma do usuário: pt-BR (Arthur). Respostas curtas, sem jargão técnico desnecessário; ele usa o app do Claude no celular.
 
-Página web pessoal com o treino de academia do Arthur: cada exercício tem um boneco 3D que demonstra a execução correta (câmera girável, 9 frames, músculos coloridos por função), mais a jornada de treino (conjuntos, sessão com descanso, resumo) e a pontuação gamificada. Hoje é um **Artifact do claude.ai** (HTML único) e está em evolução para um **app web multiusuário** (Vercel + Supabase, login por convite, ranking). Roadmap e prompts das sessões S01–S18: `docs/wiki/Roadmap-e-Sessoes.md`.
+Página web pessoal com o treino de academia do Arthur: cada exercício tem um boneco 3D que demonstra a execução correta (câmera girável, 9 frames, músculos coloridos por função), mais a jornada de treino (conjuntos, sessão com descanso, resumo) e a pontuação gamificada. Hoje é um **Artifact do claude.ai** (HTML único) e está em evolução para um **app web multiusuário** (Vercel + Supabase, login por convite, ranking). Roadmap e prompts das sessões S01–S18: `docs/wiki/Roadmap-e-Sessoes.md`. **Produção (Vercel, PWA): https://gym-app-pied-five.vercel.app/** (preview por PR; deploy em `docs/claude/Build-e-Publicacao.md`).
 
 ## Documentação em camadas — como usar este repositório
 
@@ -36,9 +36,9 @@ Os e2e falham sozinhos em erro de JS ou largura > **390**. Detalhe dos testes e 
 ```
 CLAUDE.md             este índice
 index.html            casca HTML (menu da biblioteca, palco 3D, telas); vite.config.js (plugin de pontos)
-src/main.js           entrada: CSS, three-setup, 3d/app3d.js (biblioteca 3D), jornada/treino.js (+ pontos.js)
+src/main.js           entrada: CSS, 3d/carregar.js (3D sob demanda), jornada/treino.js (+ pontos.js), pwa.js
 src/styles/           app.css (casca) e treino.css (jornada)
-public/modelos/       body-model-v1.glb (no Artifact vira body-model.wasm)
+public/               modelos/body-model-v1.glb (no Artifact vira body-model.wasm), icons/ (PWA); vercel.json na raiz
 tests/                e2e/ (Playwright com assert), unit/ (vitest), visual/ (prints da skill 3D)
 docs/wiki/            documentação normativa (sincroniza com a Wiki)
 docs/claude/          detalhe de implementação para a IA
@@ -59,7 +59,7 @@ tools/  third_party/  geração do modelo; atlas (CC BY-SA 4.0: manter ATTRIBUTI
 | Jornada: conjuntos, treinos, sessão, resumo, circuito, aquecimento, ficha da semana, prévia 3D | `docs/wiki/Funcionalidade-Treinos-e-Sessao.md` §8 | `src/jornada/treino.js`, `src/styles/treino.css` |
 | Pontuação: pontos, nível, liga, sequência, desafios, conquistas, calorias | `docs/wiki/Funcionalidade-Pontuacao.md` §8 | `src/jornada/pontos.js` (`PX`) |
 | Dados: formato dos documentos, regras de acesso, migração | `docs/wiki/Modelo-de-Dados.md` | `src/jornada/treino.js` (`armazenamento`, `migracao`), `seed/`, `data/` |
-| Build, testes e publicação no Artifact | `docs/claude/Build-e-Publicacao.md` | `vite.config.js`, `scripts/build-artifact.mjs`, `playwright.config.js`, `tests/`, `.github/workflows/ci.yml` |
+| Build, testes, deploy na Vercel (PWA, CSP) e publicação no Artifact | `docs/claude/Build-e-Publicacao.md` | `vite.config.js`, `vercel.json`, `scripts/build-artifact.mjs`, `playwright.config.js`, `tests/`, `.github/workflows/ci.yml` |
 | Navegação por regiões dos arquivos grandes | `docs/claude/Mapa-de-Regioes.md` | `grep -n "#region:" src/*/*.js` |
 | Plano de evolução, sessões S01–S18, regras transversais, perguntas em aberto | `docs/wiki/Roadmap-e-Sessoes.md`, `docs/wiki/Sessoes/` | — |
 | Visão, arquitetura e demais funcionalidades (ranking, contas, biblioteca, admin) | `docs/wiki/Home.md` (e `Visao-e-Escopo`, `Arquitetura`, `Funcionalidade-*`) | — |
@@ -85,3 +85,4 @@ tools/  third_party/  geração do modelo; atlas (CC BY-SA 4.0: manter ATTRIBUTI
 | 013 | Dois projetos Supabase (dev e prod) e preview por PR |
 | 014 | Login obrigatório para tudo, incluindo a biblioteca 3D |
 | 015 | Build do Artifact pelo Vite (modo `artifact`, arquivo único, `dist-artifact/` fora do git); e2e com assert contra o build |
+| 016 | Vercel (preview por PR), PWA com vite-plugin-pwa, CSP por hash e 3D carregado sob demanda (S03) |

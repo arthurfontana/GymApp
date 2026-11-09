@@ -47,6 +47,8 @@ const GRUPOS=['Peito','Pernas','Costas','Ombros','Braços','Core'];
 const EQ={maquina:'Máquina',polia:'Polia',barra:'Barra',halteres:'Halteres',banco:'Banco'};
 const EQ_ORD=Object.keys(EQ);
 window.__LIB_IDS=Object.keys(LIB);
+/* ids dos exercícios 3D: derivados de LIB para existirem antes de o 3D carregar (S03; tests/unit/lib-exs.test.js garante LIB == EXS) */
+window.__EX_IDS=Object.keys(LIB);
 
 // #region: estado
 /* ---------- Estado ---------- */
@@ -303,6 +305,8 @@ const libCard=()=>`<a class="card lib" href="#biblioteca">${icon.cube}<span clas
 function vInicio(){
   const cs=conjuntosOrd(), act=sessaoAtiva(), feitas=sessoesFeitas(), ro=S.readOnly;
   let h=`<header class="top tb">${themeBtn()}<span class="eyebrow">Meu Treino 3D</span><h1>Meus treinos</h1></header>`+vStatus();
+  /* app na Vercel sem login (até a S05): dados só no aparelho */
+  if(S.mode==='local'&&import.meta.env.MODE!=='artifact')h+='<p class="note">Versão de teste — seus dados ficam só neste aparelho.</p>';
   if(act)h+=heroAtivo(act);
   if(S.ready)h+=vPlacarCard();
   h+=`<section class="sec"><div class="sec-h"><h3>Conjuntos de treino</h3>${ro?'':`<button class="link" data-act="novoConjunto">${icon.plus}Novo conjunto</button>`}</div>`;
@@ -918,7 +922,7 @@ const VIEWS={home:'#homeView',conjunto:'#conjuntoView',bib:'#bibView',treino:'#t
 function route(){
   const h=location.hash.slice(1);
   const prev=ui.lastHash;ui.lastHash=h;
-  const exIds=window.__EX_IDS||Object.keys(LIB);
+  const exIds=window.__EX_IDS;
   if(exIds.includes(h)){
     ui.view='ex';app.hidden=true;menu.hidden=true;exv.hidden=false;
     const back=exv.querySelector('.back');
@@ -927,7 +931,7 @@ function route(){
     window.scrollTo(0,0);if(window.__enterExercise)window.__enterExercise(h);livePill();return;
   }
   exv.hidden=true;
-  if(h==='biblioteca'){if(window.__mini)window.__mini(null);mini3d=false;ui.view='lib';app.hidden=true;menu.hidden=false;document.title='Biblioteca 3D';window.scrollTo(0,0);livePill();return;}
+  if(h==='biblioteca'){window.__carregar3D();if(window.__mini)window.__mini(null);mini3d=false;ui.view='lib';app.hidden=true;menu.hidden=false;document.title='Biblioteca 3D';window.scrollTo(0,0);livePill();return;}
   menu.hidden=true;app.hidden=false;
   let v='home',m;
   if((m=h.match(/^conjunto\/([^/]+)\/treino\/([^/]+)$/))){v='treino';ui.conjuntoId=decodeURIComponent(m[1]);ui.treinoId=decodeURIComponent(m[2]);}
@@ -949,5 +953,5 @@ window.addEventListener('hashchange',route);
 enfeitaBiblioteca();
 route();
 initStore();
-if(window.__TEST__)window.__S=S,window.__ui=ui,window.__put=put;
+if(window.__TEST__)window.__S=S,window.__ui=ui,window.__put=put,window.__APP__=true;
 })();

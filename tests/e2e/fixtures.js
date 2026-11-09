@@ -48,9 +48,16 @@ export async function semear(page, chaves) {
   }, chaves);
 }
 
-/** abre o app em modo de teste e espera o modelo 3D */
-export async function abrir(page, hash = '') {
+/**
+ * abre o app em modo de teste. __APP__ = jornada pronta; __READY__ = modelo 3D pronto.
+ * Desde a S03 o 3D é sob demanda: por padrão o helper o carrega (os specs usam __go, __EXC...);
+ * com { sem3d: true } abre só a jornada, como o usuário vê no Início.
+ */
+export async function abrir(page, hash = '', { sem3d = false } = {}) {
   await page.goto('/?test=1' + hash);
+  await page.waitForFunction(() => window.__APP__ === true, null, { timeout: 60_000 });
+  if (sem3d) return;
+  await page.evaluate(() => window.__carregar3D());
   await page.waitForFunction(() => window.__READY__ === true, null, { timeout: 120_000 });
 }
 
