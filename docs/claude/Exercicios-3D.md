@@ -1,6 +1,6 @@
 # Exercícios 3D — catálogo e parâmetros
 
-Detalhe de cada exercício da biblioteca 3D (id do hash, const em `web/app.js`, grupo, parâmetros, vistas, cores, tempo e erros). Para **criar ou ajustar** um exercício, siga a skill `animacao-3d-exercicio`; o motor, o rig e a estrutura do objeto estão em [Motor-3D](Motor-3D.md). Para achar o bloco no código: `grep -n "#region: ex-" web/app.js` ([Mapa-de-Regioes](Mapa-de-Regioes.md)).
+Detalhe de cada exercício da biblioteca 3D (id do hash, const em `src/3d/app3d.js`, grupo, parâmetros, vistas, cores, tempo e erros). Para **criar ou ajustar** um exercício, siga a skill `animacao-3d-exercicio`; o motor, o rig e a estrutura do objeto estão em [Motor-3D](Motor-3D.md). Para achar o bloco no código: `grep -n "#region: ex-" web/app.js` ([Mapa-de-Regioes](Mapa-de-Regioes.md)).
 
 ## Objetivo da biblioteca 3D
 

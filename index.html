@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#edf0f3">
+<title>Meu Treino 3D</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+<!-- Tema antes do conteúdo (sem piscar): claro por padrão, escolha guardada no aparelho (ADR-000g) -->
+<script>try{document.documentElement.dataset.theme=localStorage.getItem('mt3d.theme')==='dark'?'dark':'light';}catch(e){document.documentElement.dataset.theme='light';}if(document.documentElement.dataset.theme==='dark')document.querySelector('meta[name="theme-color"]').content='#0e1318';</script>
+<!-- Modo de teste (e2e e prints): ?test=1 liga os ganchos window.__* do 3D e da jornada. Precisa vir antes do módulo -->
+<script>if(/[?&]test=1(&|$)/.test(location.search))window.__TEST__=1;</script>
+</head>
+<body>
+<div class="app" id="appView">
+  <section class="scr" id="homeView"></section>
+  <section class="scr" id="conjuntoView" hidden></section>
+  <section class="scr" id="bibView" hidden></section>
+  <section class="scr" id="treinoView" hidden></section>
+  <section class="scr" id="sessaoView" hidden></section>
+  <section class="scr" id="resumoView" hidden></section>
+  <section class="scr" id="pontosView" hidden></section>
+</div>
+
+<main class="menu" id="menuView" hidden>
+  <div class="navrow"><a class="back" href="#"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Meus treinos</a><span data-themebtn></span></div>
+  <header>
+    <span class="eyebrow">Compartilhada por todos os conjuntos</span>
+    <h1>Biblioteca</h1>
+  </header>
+  <nav class="libtabs" aria-label="Biblioteca"><a href="#biblioteca" aria-current="page">Exercícios 3D</a><a href="#biblioteca/treinos">Treinos</a></nav>
+  <p class="lead">Toque num exercício para ver o boneco 3D fazendo o movimento. Gire a cena, pause e avance quadro a quadro.</p>
+  <div class="eqfilter" role="group" aria-label="Filtrar por equipamento"><button type="button" data-eqf="todos" aria-pressed="true">Todos</button><button type="button" data-eqf="sem" aria-pressed="false">Sem equipamento</button><button type="button" data-eqf="com" aria-pressed="false">Com equipamento</button></div>
+  <p class="eqempty lead" hidden>Nenhum exercício com esse filtro.</p>
+  <section class="group" aria-labelledby="g-peito">
+    <h2 id="g-peito">Peito</h2>
+    <a class="ex" href="#supino-inclinado">
+      <span class="num">01</span>
+      <span class="nm">Supino inclinado com halteres</span>
+      <span class="meta"><span class="badge">Peitoral superior</span><span>Banco <b>30°</b></span><span><b>2</b> halteres</span></span>
+      <svg class="go" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+    </a>
+    <a class="ex" href="#supino-maquina">
+      <span class="num">13</span>
+      <span class="nm">Supino sentado na máquina</span>
+      <span class="meta"><span class="badge">Peitoral maior</span><span>Pegada <b>neutra</b></span><span>Braços <b>convergentes</b></span></span>
+      <svg class="go" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+    </a>
+    <a class="ex" href="#flexao-joelhos">
+      <span class="num">15</span>
+      <span class="nm">Flexão com joelhos apoiados</span>
+      <span class="meta"><span class="badge">Peitoral maior</span><span>Joelhos <b>no chão</b></span><span>Com <b>erros comuns</b></span></span>
+      <svg class="go" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+    </a>
+    <a class="ex" href="#flexao-parede">
+      <span class="num">16</span>
+      <span class="nm">Flexão inclinada na parede</span>
+      <span class="meta"><span class="badge">Peitoral maior</span><span>Apoio na <b>parede</b></span><span>Para <b>iniciantes</b></span></span>
+      <svg class="go" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+    </a>
+  </section>
+  <section class="group" aria-labelledby="g-pernas">
+    <h2 id="g-pernas">Pernas</h2>
+    <a class="ex" href="#leg-press-45">
+      <span class="num">02</span>
+      <span class="nm">Leg press 45°</span>
+      <span class="meta"><span class="badge">Quadríceps e glúteos</span><span>Máquina <b>45°</b></span><span>Com <b>erros comuns</b></span></span>
+      <svg class="go" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+    </a>
+    <a class="ex" href="#stiff-halteres">
+      <span class="num">03</span>
+      <span class="nm">Stiff com halteres</span>
+      <span class="meta"><span class="badge">Isquiotibiais e glúteo máximo</span><span>Dobradiça do <b>quadril</b></span><span>Com <b>erros comuns</b></span></span>
+      <svg class="go" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+    </a>
+    <a class="ex" href="#agachamento-goblet">
+      <span class="num">08</span>
+      <span class="nm">Agachamento goblet com halter</span>
+      <span class="meta"><span class="badge">Quadríceps, glúteos e adutores</span><span>Um halter <b>no peito</b></span><span>Com <b>erros comuns</b></span></span>
+      <svg class="go" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+    </a>
+    <a class="ex" href="#mesa-flexora">
+      <span class="num">10</span>
+      <span class="nm">Mesa flexora deitada</span>
+      <span class="meta"><span class="badge">Isquiotibiais</span><span>Máquina <b>deitada</b></span><span>Com <b>erros comuns</b></span></span>
+      <svg class="go" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+    </a>
+    <a class="ex" href="#panturrilha-em-pe">
+      <span class="num">12</span>
+      <span class="nm">Panturrilha em pé na máquina</span>
+      <span class="meta"><span class="badge">Gastrocnêmio e sóleo</span><span>Máquina <b>em pé</b></span><span>Com <b>erros comuns</b></span></span>
+      <svg class="go" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+    </a>
+    <a class="ex" href="#elevacao-pelvica">
+      <span class="num">14</span>
+      <span class="nm">Elevação pélvica com barra</span>
+      <span class="meta"><span class="badge">Glúteo máximo</span><span>Costas no <b>banco</b></span><span>Com <b>erros comuns</b></span></span>
+      <svg class="go" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+    </a>
+    <a class="ex" href="#agachamento-livre">
+      <span class="num">17</span>
+      <span class="nm">Agachamento livre</span>
+      <span class="meta"><span class="badge">Quadríceps e glúteos</span><span>Braços <b>à frente</b></span><span>Com <b>erros comuns</b></span></span>
+      <svg class="go" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+    </a>
+    <a class="ex" href="#afundo-tras">
+      <span class="num">18</span>
+      <span class="nm">Afundo para trás</span>
+      <span class="meta"><span class="badge">Quadríceps e glúteos</span><span>Passo <b>para trás</b></span><span>Alterna as <b>pernas</b></span></span>
+      <svg class="go" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+    </a>
+    <a class="ex" href="#bom-dia">
+      <span class="num">19</span>
+      <span class="nm">Bom dia sem carga</span>
+      <span class="meta"><span class="badge">Posterior de coxa</span><span>Dobradiça do <b>quadril</b></span><span>Braços <b>cruzados</b></span></span>
+      <svg class="go" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+    </a>
+    <a class="ex" href="#ponte-gluteos">
+      <span class="num">20</span>
+      <span class="nm">Ponte de glúteos</span>
+      <span class="meta"><span class="badge">Glúteo máximo</span><span>Costas <b>no chão</b></span><span>Com <b>erros comuns</b></span></span>
+      <svg class="go" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+    </a>
+  </section>
+  <section class="group" aria-labelledby="g-costas">
+    <h2 id="g-costas">Costas</h2>
+    <a class="ex" href="#remada-sentada">
+      <span class="num">04</span>
+      <span class="nm">Remada sentada na polia baixa</span>
+      <span class="meta"><span class="badge">Latíssimo e romboides</span><span>Puxador <b>triangular</b></span><span>Com <b>erros comuns</b></span></span>
+      <svg class="go" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+    </a>
+    <a class="ex" href="#puxada-alta">
+      <span class="num">09</span>
+      <span class="nm">Puxada alta na polia</span>
+      <span class="meta"><span class="badge">Latíssimo do dorso</span><span>Pegada <b>pronada</b></span><span>Com <b>erros comuns</b></span></span>
+      <svg class="go" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+    </a>
+  </section>
+  <section class="group" aria-labelledby="g-ombros">
+    <h2 id="g-ombros">Ombros</h2>
+    <a class="ex" href="#elevacao-lateral">
+      <span class="num">05</span>
+      <span class="nm">Elevação lateral com halteres</span>
+      <span class="meta"><span class="badge">Deltoide lateral</span><span>Plano <b>escapular</b></span><span>Com <b>erros comuns</b></span></span>
+      <svg class="go" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+    </a>
+  </section>
+  <section class="group" aria-labelledby="g-bracos">
+    <h2 id="g-bracos">Braços</h2>
+    <a class="ex" href="#triceps-polia">
+      <span class="num">06</span>
+      <span class="nm">Tríceps na polia alta com corda</span>
+      <span class="meta"><span class="badge">Tríceps · 3 cabeças</span><span>Polia <b>alta</b></span><span>Com <b>erros técnicos</b></span></span>
+      <svg class="go" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+    </a>
+    <a class="ex" href="#rosca-biceps">
+      <span class="num">11</span>
+      <span class="nm">Rosca bíceps com halteres</span>
+      <span class="meta"><span class="badge">Bíceps braquial</span><span>Pegada <b>supinada</b></span><span>Com <b>erros comuns</b></span></span>
+      <svg class="go" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+    </a>
+  </section>
+  <section class="group" aria-labelledby="g-core">
+    <h2 id="g-core">Core</h2>
+    <a class="ex" href="#prancha">
+      <span class="num">07</span>
+      <span class="nm">Prancha abdominal frontal</span>
+      <span class="meta"><span class="badge">Reto abdominal e core</span><span>Exercício <b>isométrico</b></span><span>Com <b>erros comuns</b></span></span>
+      <svg class="go" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+    </a>
+    <a class="ex" href="#bird-dog">
+      <span class="num">21</span>
+      <span class="nm">Bird dog</span>
+      <span class="meta"><span class="badge">Anti-rotação</span><span>Quatro <b>apoios</b></span><span>Alterna os <b>lados</b></span></span>
+      <svg class="go" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+    </a>
+    <a class="ex" href="#dead-bug">
+      <span class="num">22</span>
+      <span class="nm">Dead bug</span>
+      <span class="meta"><span class="badge">Anti-extensão</span><span>Deitado, <b>90/90</b></span><span>Alterna os <b>lados</b></span></span>
+      <svg class="go" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+    </a>
+  </section>
+</main>
+
+<div class="page" id="exView" hidden>
+  <div class="navrow"><a class="back" href="#biblioteca"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>Exercícios</a><span data-themebtn></span></div>
+  <header>
+    <span class="eyebrow" id="exEyebrow"></span>
+    <h1 id="exTitle"></h1>
+    <div class="specs" id="exSpecs"></div>
+  </header>
+
+  <div class="layout">
+    <section class="viewer" aria-label="Visualizador 3D">
+      <div class="stage" id="stage">
+        <div class="tags" id="tags"></div>
+        <div class="loading" id="loading">Carregando modelo anatômico…</div>
+        <div class="hud">
+          <span class="frame-no" id="frameNo">FRAME 01 / 09</span>
+          <span class="frame-title" id="frameTitle">Preparação</span>
+          <span class="phase" id="phase">Preparação</span>
+          <span class="cue" id="cue"></span>
+          <span class="errbadge" id="errBadge" hidden></span>
+        </div>
+        <div class="readouts" id="readouts"></div>
+      </div>
+
+      <div class="panel">
+        <div class="seg" role="group" aria-label="Câmera">
+          <button data-view="lateral" aria-pressed="true">Lateral</button>
+          <button data-view="frontal" aria-pressed="false">Frontal</button>
+          <button data-view="anatomia" aria-pressed="false">Anatomia</button>
+          <button data-view="detalhe" aria-pressed="false" hidden>Close</button>
+          <button data-view="superior" aria-pressed="false" hidden>Superior</button>
+          <button data-view="posterior" aria-pressed="false" hidden>Posterior</button>
+          <button data-view="diagonal" aria-pressed="false" hidden>45°</button>
+        </div>
+        <div class="scrub">
+          <div class="ticks" id="ticks"></div>
+          <input type="range" id="scrub" min="0" max="1000" value="0" aria-label="Posição na animação">
+        </div>
+        <div class="transport">
+          <button class="btn" id="prev" aria-label="Frame anterior"><svg viewBox="0 0 24 24"><path d="M6 5h2v14H6zM20 5v14L9 12z"/></svg></button>
+          <button class="btn play" id="play" aria-label="Pausar"><svg viewBox="0 0 24 24" id="playIcon"><path d="M7 5h4v14H7zM13 5h4v14h-4z"/></svg></button>
+          <button class="btn" id="next" aria-label="Próximo frame"><svg viewBox="0 0 24 24"><path d="M16 5h2v14h-2zM4 5v14l11-7z"/></svg></button>
+          <span class="time" id="time">0,0 s</span>
+          <div class="seg" role="group" aria-label="Velocidade" id="speeds">
+            <button data-sp="0.25" aria-pressed="false">0,25×</button>
+            <button data-sp="0.5" aria-pressed="false">0,5×</button>
+            <button data-sp="1" aria-pressed="true">1×</button>
+            <button data-sp="2" aria-pressed="false">2×</button>
+          </div>
+        </div>
+        <div class="toggles">
+          <button class="chip" id="tMus" aria-pressed="true">Músculos</button>
+          <button class="chip" id="tGuide" aria-pressed="true">Trajetória e setas</button>
+          <button class="chip" id="tLoop" aria-pressed="true">Repetir só o movimento</button>
+          <button class="chip" id="tParts" aria-pressed="false">Peças da máquina</button>
+          <button class="chip" id="tSide" aria-pressed="false" hidden>Trocar lado</button>
+        </div>
+        <p class="small" style="margin:0">Arraste na cena para girar, faça pinça para aproximar. Toque num frame da lista para ir direto a ele.</p>
+      </div>
+    </section>
+
+    <div class="info">
+      <section class="card">
+        <h2>Os 9 frames</h2>
+        <ol class="frames" id="frames"></ol>
+      </section>
+      <div class="info" id="infoBefore"></div>
+
+      <section class="card">
+        <h2>Músculos</h2>
+        <div id="legend"></div>
+        <p class="small" style="margin:6px 0 0">Toque num músculo para isolá-lo na cena. As cores mostram a função de cada músculo no exercício, não uma medição de ativação (EMG).</p>
+      </section>
+      <div class="info" id="infoAfter"></div>
+    </div>
+  </div>
+
+  <footer class="credits">
+    <span>Modelo didático. Os ângulos seguem o briefing de cada exercício e servem como referência geral: a amplitude certa depende da sua mobilidade de ombro. Confirme a execução com o professor da academia.</span>
+    <span>Modelo 3D: <a href="https://sketchfab.com/3d-models/male-base-muscular-anatomy-0954aa04666d45aab9633009318f7b66" target="_blank" rel="noopener">Male base muscular anatomy</a>, de CharacterZone, licenciado sob <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">Creative Commons Attribution 4.0</a>. Alterações feitas nesta página: textura de pele substituída por acabamento neutro; esqueleto, pesos de deformação, poses e cores dos músculos aplicados no navegador.</span>
+  </footer>
+</div>
+
+<div class="sheet-wrap" id="sheetWrap" hidden><div class="sheet" id="sheet" role="dialog" aria-modal="true" aria-label="Opções"></div></div>
+<button class="livepill" id="livePill" hidden></button>
+<div class="toast" id="toast" role="status" hidden></div>
+
+<script type="module" src="/src/main.js"></script>
+</body>
+</html>

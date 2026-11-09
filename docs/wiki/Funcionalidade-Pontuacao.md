@@ -3,7 +3,7 @@
 > **Estado**: ✅ Em produção no Artifact (v21, calculada no aparelho) · 🔮 módulo puro com fuso explícito (S10) · 🔮 cálculo oficial no servidor (S11)
 > **DECs relacionadas**: ADR-004, ADR-009
 > **Última sessão que alterou esta página**: S00
-> O detalhe das regras (pontos, bônus, XP, ligas, desafios, conquistas, calorias e telas) está em §8, e o código em `web/pontos.js` (mapa de regiões em `docs/claude/Mapa-de-Regioes.md`). A tabela `PX` fica no código (`catalogo.js`) e a régua para exercício novo, na skill `animacao-3d-exercicio` §3a.
+> O detalhe das regras (pontos, bônus, XP, ligas, desafios, conquistas, calorias e telas) está em §8, e o código em `src/jornada/pontos.js` (mapa de regiões em `docs/claude/Mapa-de-Regioes.md`). A tabela `PX` fica no código (`catalogo.js`) e a régua para exercício novo, na skill `animacao-3d-exercicio` §3a.
 
 ## 1. O que é e para quem
 

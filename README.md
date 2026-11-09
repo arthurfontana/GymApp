@@ -5,10 +5,11 @@ Página de treino pessoal com boneco 3D (22 exercícios), jornada de treino (con
 Roda como Artifact do claude.ai: https://claude.ai/artifact/7rca7r3eRxTwX4kiZ4B7zK
 
 ```bash
-cd web
 npm install
-python3 build.py        # monta index.html e test.html
-npm run serve           # http://localhost:8765/test.html
+npm run dev             # http://localhost:5173 (com ?test=1 liga os ganchos de teste)
+npm run check           # guard do CLAUDE.md + testes unitários + build (dist/)
+npm run test:e2e        # testes de ponta a ponta com assert (Playwright, claro e escuro)
+npm run build:artifact  # dist-artifact/: arquivo único para o Artifact + body-model.wasm
 ```
 
 O contexto completo para continuar a evolução (regras, decisões, estrutura) está em [CLAUDE.md](CLAUDE.md).

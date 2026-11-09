@@ -1,16 +1,16 @@
 # Motor 3D — stack, modelo, rig, músculos e estrutura de um exercício
 
-Referência técnica do que fica em `web/app.js` (e o contrato de cada exercício). Para criar/ajustar um exercício, use a skill `animacao-3d-exercicio`; os parâmetros de cada um estão em [Exercicios-3D](Exercicios-3D.md); a navegação por regiões, em [Mapa-de-Regioes](Mapa-de-Regioes.md).
+Referência técnica do que fica em `src/3d/app3d.js` (e o contrato de cada exercício). Para criar/ajustar um exercício, use a skill `animacao-3d-exercicio`; os parâmetros de cada um estão em [Exercicios-3D](Exercicios-3D.md); a navegação por regiões, em [Mapa-de-Regioes](Mapa-de-Regioes.md).
 
 ## Stack
 
-- **Three.js r128** via jsDelivr (UMD): `three.min.js`, `examples/js/controls/OrbitControls.js`, `examples/js/loaders/GLTFLoader.js`. Versão fixa (`three@0.128.0`).
-- Tudo num único HTML (CSS + JS inline). Fontes Google: Barlow Condensed (títulos), IBM Plex Sans (texto), IBM Plex Mono (números/rótulos).
-- Restrições do Artifact: scripts só de CDNs permitidos (cdnjs, jsdelivr, unpkg…); **`.glb` não é servido** → o binário GLB é publicado com o nome `body-model.wasm` e carregado com `fetch('body-model.wasm').then(r=>r.arrayBuffer())` + `new THREE.GLTFLoader().parse(buf,'',…)`.
+- **Three.js r128** por npm, versão fixa (`three@0.128.0`): `src/three-setup.js` monta o global `window.THREE` (cópia do namespace + `OrbitControls` e `GLTFLoader` de `examples/jsm`), que o `app3d.js` usa como antes usava o UMD do jsDelivr.
+- Build com Vite (ver [Build-e-Publicacao](Build-e-Publicacao.md)); no Artifact, tudo num único HTML (CSS + JS inline, three empacotado). Fontes Google: Barlow Condensed (títulos), IBM Plex Sans (texto), IBM Plex Mono (números/rótulos).
+- Restrições do Artifact: scripts só de CDNs permitidos (cdnjs, jsdelivr, unpkg…); **`.glb` não é servido** → no build do Artifact o GLB é publicado com o nome `body-model.wasm`. O código carrega `fetch(import.meta.env.MODE==='artifact' ? 'body-model.wasm' : import.meta.env.BASE_URL+'modelos/body-model-v1.glb').then(r=>r.arrayBuffer())` + `new THREE.GLTFLoader().parse(buf,'',…)`.
 - Cores: tokens CSS em `:root` com tema escuro (`prefers-color-scheme` e `[data-theme]`). Cores 3D convertidas para linear: `lin = h => new THREE.Color(h).convertSRGBToLinear()`, `renderer.outputEncoding = sRGBEncoding`.
 
 
-## Hooks de teste (só com `window.__TEST__`)
+## Hooks de teste (só com `window.__TEST__`, ligado por `?test=1` na URL)
 
 `window.__READY__` (modelo carregado), `window.__go(t, vista, camPos?, camTarget?, erro?)` renderiza um instante, `window.__parts(bool)`, `window.__REST__=true` (pose T), `window.__J`/`__BM`/`__bi`/`__body`.
 
@@ -51,7 +51,7 @@ Referência técnica do que fica em `web/app.js` (e o contrato de cada exercíci
   pose(t)→J {bones, side[], p, v, …}, phase(J)→{kind,label,cue},
   update(J,t,ph)→{readoutId:{v,s:'ok'|'warn'|''}}, viewChanged?(vista) }
 ```
-Para adicionar um exercício: criar o objeto, registrar em `EXS` com o hash, incluir o hash em `IDS` do roteador (`EXS` fica logo depois dos objetos dos exercícios), adicionar o card no menu (`<a class="ex" href="#…">` no grupo muscular certo, numeração sequencial), criar máscaras novas em `masks()` se faltar músculo, rodar `build.py`, testar com screenshots (lateral/frontal/anatomia, celular claro/escuro) e publicar no **mesmo Artifact** (mesmo caminho de arquivo / mesma URL).
+Para adicionar um exercício: criar o objeto, registrar em `EXS` com o hash, incluir o hash em `IDS` do roteador (`EXS` fica logo depois dos objetos dos exercícios), adicionar o card no menu (`<a class="ex" href="#…">` no grupo muscular certo, numeração sequencial), criar máscaras novas em `masks()` se faltar músculo, ver o app com `npm run dev`, testar com screenshots (lateral/frontal/anatomia, celular claro/escuro) e publicar no **mesmo Artifact** (mesmo caminho de arquivo / mesma URL).
 
 
 ## Parâmetros da remada (referência)
